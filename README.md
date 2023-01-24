@@ -1,3 +1,3 @@
 # AOP
 
-Note: My files and progress reports are dumped here on Tuesdays mornings. 
+Note: My files and progress reports are updated here each Tuesday morning before practice. 
