@@ -39,9 +39,23 @@ use_osc "localhost", 12004
 instrAmp = 1.4
 orchestraAmp = 0
 
+# --------------------------------------
 # DEFINE SOUNDSCAPE KITS
+# --------------------------------------
+
 samples = [
   [
+    :ambi_drone,
+    :elec_triangle,
+    :ambi_piano,
+    :elec_soft_kick,
+    :elec_beep,
+    :perc_bell,
+    :elec_triangle,
+    :tabla_tas1,
+    :tabla_tas2,
+  ]
+  ,[
     :bd_haus,
     :drum_snare_hard,
     :drum_cymbal_closed,
@@ -120,7 +134,11 @@ samples = [
 step = []
 midiNotes = []
 
+
+# --------------------------------------
 # RECEIVE OSC VARIABLES
+# --------------------------------------
+
 live_loop :receivedNewPattern do
   use_real_time
   a = sync "/osc*/wek/outputs"
@@ -157,6 +175,11 @@ live_loop :receivedAmp do
 end
 
 
+#Sync amp to the input volume or return 0.
+live_loop :syncAmp do
+  instrAmp = orchestraAmp[0] || [0]
+  sleep 0.4
+end
 
 #Randomise amp every 4 beats if it is not silent
 #live_loop :randomiseamp do
@@ -164,14 +187,17 @@ end
 #  sleep 4
 #end
 
-#Sync amp to the input volume
-live_loop :syncAmp do
-  #instrAmp = orchestraAmp[0] ||
-  instrAmp = 3
-  sleep 0.4
+#Every two breaths, it may be silent for two breaths
+live_loop :randomisesilence do  
+  instrAmp = choose([0, instrAmp])
+  sleep 8
 end
 
+
+# --------------------------------------
 # PLAY SOUNDSCAPE PATTERNS
+# --------------------------------------
+
 live_loop :playPatterns, sync: :selectSoundscape do
   midiNotes = get[:notes] || []
   step = get[:steps] || []
@@ -179,9 +205,9 @@ live_loop :playPatterns, sync: :selectSoundscape do
   genStep = get[:genSteps] || []
   playGen = get[:playGenOrNot]
   
-  
-  # SOUNDKIT CHOICE: Override soundkit choice to be a random selection
-  set :kit, choose([["0"],["1"],["2"],["3"],["4"],["5"],["6"]])
+  # Override soundkit choice to be a random selection
+  # This week for simiplicity, the choice of sound will fixed by the GUI
+  # set :kit, choose([["0"],["1"],["2"],["3"],["4"],["5"],["6"]])
   
   i = get[:kit][0].to_i
   
