@@ -23,7 +23,7 @@ ps3.init()
 
 def control(spip):
  gate=0.1
- sender=udp_client.SimpleUDPClient(spip,4559) #sender set up for specified IP
+ sender=udp_client.SimpleUDPClient(spip,4560) #sender set up for specified IP
 
  while True:
     try:
@@ -78,19 +78,19 @@ def control(spip):
         b9=ps3.get_button(9)
         if b9>0:
             sender.send_message('/b9',b9)
-        b10=ps3.get_button(10)
-        if b10>0:
-            sender.send_message('/b10',b10)
-        b11=ps3.get_button(11)
-        if b11>0:
-            sender.send_message('/b11',b11)
-        b12=ps3.get_button(12)
-        if b12>0:
-            sender.send_message('/b12',b12)
+       # b10=ps3.get_button(10)
+        #if b10>0:
+         #   sender.send_message('/b10',b10)
+        #b11=ps3.get_button(11)
+        #if b11>0:
+        #    sender.send_message('/b11',b11)
+        #b12=ps3.get_button(12)
+        #if b12>0:
+        #    sender.send_message('/b12',b12)
 
-        hat=ps3.get_hat(0)
-        if hat[0]!=0 and hat[1]!=0:
-            sender.send_message('/hat',hat)
+       # hat=ps3.get_hat(0)
+       # if hat[0]!=0 and hat[1]!=0:
+       #     sender.send_message('/hat',hat)
 
         clock.tick(20)
         subprocess.call("clear")
