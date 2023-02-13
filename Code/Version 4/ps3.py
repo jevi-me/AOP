@@ -16,14 +16,21 @@ from time import sleep
 
 pygame.display.init()
 pygame.joystick.init()
+isReady = pygame.joystick.get_init();
+joyNum = pygame.joystick.get_count();
+print(isReady)
+print(joyNum)
 clock=pygame.time.Clock()
 ps3 = pygame.joystick.Joystick(0)
+joyName = print(ps3.get_name())
+print(joyName)
+
 
 ps3.init()
 
 def control(spip):
  gate=0.1
- sender=udp_client.SimpleUDPClient(spip,4560) #sender set up for specified IP
+ sender=udp_client.SimpleUDPClient(spip, 4560) #sender set up for specified IP
 
  while True:
     try:
