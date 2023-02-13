@@ -147,8 +147,8 @@
 
         /* Drone Sound*/
         droneSynth = {
-            fm: new Tone.FMOscillator(100, "sawtooth", "sawtooth").start(),
-            fm2: new Tone.FMOscillator(112.5, "sawtooth", "sawtooth").start(),
+            fm: new Tone.FMOscillator(100, "sawtooth", "sawtooth"),
+            fm2: new Tone.FMOscillator(112.5, "sawtooth", "sawtooth"),
             vol: new Tone.Volume(-Infinity),
             pan: new Tone.Panner(0),
             filter: new Tone.Filter(100, "bandpass"),
@@ -163,7 +163,10 @@
         droneSynth.fm2.harmonicity.value = 4
         droneSynth.verb.wet.value = 0.2
 
-
+        /* Noise Sound */
+        noiseSynth = {
+            /*noise: new Tone.Noise("pink"),*/
+        }
 
         /* Rack 1 - Play Rack */
         /* - Sustain - */
@@ -171,12 +174,10 @@
             if (v) {
                 droneSynth.fm.start();
                 droneSynth.fm2.start();
-
                 droneSynth.vol.volume.rampTo(-20, 1)
             } else {
                 droneSynth.fm.stop();
                 droneSynth.fm2.stop();
-
             }
         });
 
@@ -217,8 +218,14 @@
 
 
 
-
         /* Rack 3 - Direction Rack */
+        rack3.noise.on('change', function(v) {
+            if (v) {
+                noiseSynth.noise.start();
+            } else {
+                noiseSynth.noise.stop();
+            }
+        });
 
     </script>
 </body>
