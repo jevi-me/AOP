@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Orchestra Performer</title>
+    <script src="../dist/NexusUI.js"></script>
+    <script src="js/Tone9.js"></script>
+    <meta name="viewport" content="width=200, initial-scale=1">
+    <style>
+        body {
+            font-family: helvetica;
+            font-weight: 300;
+            background-color: #f3f3f3;
+            color: #333;
+        }
+
+        [nexus-ui] {
+            margin: 0px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 0px 0px;
+            grid-auto-flow: row;
+            grid-template-areas:
+                "play-area fine-tune-area directions-area   ";
+        }
+
+        .play-area {
+            grid-area: play-area;
+            background-color: aliceblue;
+            padding: 20px;
+        }
+
+        .fine-tune-area {
+            grid-area: fine-tune-area;
+            background-color: antiquewhite;
+            padding: 20px;
+        }
+
+        .directions-area {
+            grid-area: directions-area;
+            background-color: beige;
+            padding: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body style="margin:0;padding:0;">
+    <div style="font-size:20px;padding:20px;text-align:center;margin-top:40px;">Orchestra Performer</div>
+
+    <div id="drone" class="container" style="background-color:#fff;border:solid 1px #ccc;padding:20px;margin:0 auto;">
+        <div class="play-area" id="rack1">
+
+            <!-- Sustain -->
+            <div nexus-ui="toggle" id="sustain" style="width:40px;height:25px;float:left;margin:0"></div>
+            <span style="height:25px;line-height:28px;margin-left:10px">Sustain</span>
+
+
+            <br><!-- Timbre -->
+            <div nexus-ui="slider" id="timbre" style="width:200px;height:25px;display:inline-block;"></div>
+            <div style="display:inline-block;float:left;padding:3px 0px 0px">Timbre &emsp;</div>
+
+            <br>
+            <!--Filter -->
+            <div nexus-ui="position" id="filter" style="width:200px;height:150px;display:inline-block;"></div>
+
+            <br><!-- Pan -->
+            <div nexus-ui="pan" id="pan" style="width:200px;height:25px;display:inline-block;"></div>
+
+            <br><!-- Spectrogram -->
+            <div nexus-ui="spectrogram" id="spectrogram" style="width:240px;height:50px;margin-left:-20px;margin-bottom:-20px;"></div>
+
+        </div>
+        <div class="fine-tune-area" id="rack2">
+            <!-- Mute Button-->
+            <div nexus-ui="toggle" id="mute" checked style="width:40px;height:25px;float:left;margin:0"></div>
+            <span style="height:25px;line-height:28px;margin-left:10px">Sound Off</span>
+            <br>
+
+
+
+            <!-- Tone -->
+            <div nexus-ui="slider" id="tone" style="width:200px;height:25px;display:inline-block;"></div>
+            <div style="display:inline-block;float:left;padding:3px 0px 0px">Tone &emsp;</div>
+
+            <!-- Density-->
+            <div nexus-ui="slider" id="density" style="width:200px;height:25px;display:inline-block;"></div>
+            <div style="display:inline-block;float:left;padding:3px 0px 0px">Density &emsp;</div>
+
+            <!-- Volume -->
+            <div nexus-ui="slider" id="volume" style="width:200px;height:25px;display:inline-block;"></div>
+            <div style="display:inline-block;float:left;padding:3px 0px 0px">Volume &emsp;</div>
+
+
+        </div>
+        <div class="directions-area" id="rack3">
+            <!-- Noise -->
+            <div nexus-ui="toggle" id="" style="width:40px;height:25px;float:left;margin:0"></div>
+            <span style="height:25px;line-height:28px;margin-left:10px">Noise</span>
+            <br>
+
+            <!-- Improvise -->
+            <div nexus-ui="toggle" id="improvise" style="width:40px;height:25px;float:left;margin:0"></div>
+            <span style="height:25px;line-height:28px;margin-left:10px">Improvise</span>
+
+            <br><!-- Pointalise-->
+            <div nexus-ui="toggle" id="pointalise" style="width:40px;height:25px;float:left;margin:0"></div>
+            <span style="height:25px;line-height:28px;margin-left:10px">Pointalise</span>
+
+        </div>
+    </div>
+
+
+    <!-- Nexus Customisation -->
+    <script>
+
+
+    </script>
+
+
+    <!-- Sound Generation -->
+    <script>
+        /*mobileStart = document.getElementById('mobileStart')
+        mobileStart.addEventListener('touchend',function() {
+          var osc = Nexus.context.createOscillator()
+          osc.connect(Nexus.context.destination)
+          osc.start(0)
+          osc.stop(0.1)
+          Nexus.clock.start();
+        })*/
+
+
+        Nexus.context = Tone.context;
+        Nexus.colors.accent = "#2cc";
+
+        /* Initialise Racks */
+        rack1 = new Nexus.Rack('#rack1');
+        rack2 = new Nexus.Rack('#rack2');
+        rack3 = new Nexus.Rack('#rack3');
+
+
+        /* Drone Sound*/
+        droneSynth = {
+            fm: new Tone.FMOscillator(100, "sawtooth", "sawtooth").start(),
+            fm2: new Tone.FMOscillator(112.5, "sawtooth", "sawtooth").start(),
+            vol: new Tone.Volume(-Infinity),
+            pan: new Tone.Panner(0),
+            filter: new Tone.Filter(100, "bandpass"),
+            verb: new Tone.Freeverb(),
+            compressor: new Tone.Compressor(-30, 10)
+        }
+
+        droneSynth.fm.connect(droneSynth.filter)
+        droneSynth.fm2.connect(droneSynth.filter);
+        droneSynth.filter.chain(droneSynth.compressor, droneSynth.vol, droneSynth.pan, droneSynth.verb, Tone.Master)
+        droneSynth.fm.harmonicity.value = 4
+        droneSynth.fm2.harmonicity.value = 4
+        droneSynth.verb.wet.value = 0.2
+
+
+
+        /* Rack 1 - Play Rack */
+        /* - Sustain - */
+        rack1.sustain.on('change', function(v) {
+            if (v) {
+                droneSynth.fm.start();
+                droneSynth.fm2.start();
+
+                droneSynth.vol.volume.rampTo(-20, 1)
+            } else {
+                droneSynth.fm.stop();
+                droneSynth.fm2.stop();
+
+            }
+        });
+
+        /* - Timbre - */
+        rack1.timbre.min = 10
+        rack1.timbre.max = 20
+        rack1.timbre.value = 0
+
+        rack1.timbre.on('change', function(v) {
+            droneSynth.fm.modulationIndex.rampTo(v, 0.1)
+            droneSynth.fm2.modulationIndex.rampTo(v, 0.1)
+        })
+
+        /* - Pan - */
+        rack1.pan.on('change', function(v) {
+            droneSynth.pan.pan.value = v.value;
+        })
+
+        /* - Filter - */
+        rack1.filter.minX = 0
+        rack1.filter.maxX = 1400
+        rack1.filter.minY = 0
+        rack1.filter.maxY = 10
+
+        rack1.filter.on('change', function(v) {
+            droneSynth.filter.frequency.value = v.x;
+            droneSynth.filter.Q.value = v.y;
+        })
+
+
+        /* - Spectrogram - */
+        rack1.spectrogram.connect(Tone.Master);
+        rack1.spectrogram.colorize("fill", "aliceblue")
+        rack1.spectrogram.colorize("accent", "#2cc")
+
+
+        /* Rack 2 - Fine Tune Rack */
+
+
+
+
+        /* Rack 3 - Direction Rack */
+
+    </script>
+</body>
+
+</html>
