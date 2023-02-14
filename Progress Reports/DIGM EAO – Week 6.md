@@ -1,6 +1,4 @@
-**DIGM 5070 – Interactive Performance and the Electro-Acoustic Orchestra  
-**
-**Student**: Jevonne Peters
+**DIGM 5070 – Interactive Performance and the Electro-Acoustic Orchestra**
 
 **Code Link:**: https://github.com/jevi-me/eao
 
@@ -61,8 +59,8 @@ d: G3 acoustic relate to G4
 - Controller used is the Tremon Gamepad. (PS4, and Logitech controllers were tried without success.)
 - Mapping is directed related to the common commands from the conductor.
 
-**Images**
- ![[Screenshot 2023-02-12 at 9.00.05 PM.png]] Sample of In Class Scribbled Notes
- ![[tremon-usb-joypad-800x800-3954157190.jpeg]] Photo of Joystick
-![[Screenshot 2023-02-13 at 7.56.45 PM 1.png]] Joystick Mapping Notes
+&rarr; **Images**
+- [Sample of In Class Scribbled Notes](https://github.com/jevi-me/EAO/blob/main/Progress%20Reports/_Images/Screenshot%202023-02-12%20at%209.00.05%20PM.png)
+-  [Photo of Joystick](https://github.com/jevi-me/EAO/blob/main/Progress%20Reports/_Images/tremon-usb-joypad-800x800-3954157190.jpeg)
+- [Joystick Mapping Notes](https://github.com/jevi-me/EAO/blob/main/Progress%20Reports/_Images/Screenshot%202023-02-13%20at%207.56.45%20PM.png)
 
