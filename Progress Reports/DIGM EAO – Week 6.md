@@ -21,12 +21,9 @@ The directions on the receiver are in natural language, and may be parsed over m
 &rarr; **Decisions**
 ~~The best solution is to join the orchestra myself. The AOP will be *relating* to me. AOP and I are Group 5.~~ Project ultimately abandoned, and replaced with backup plan.
 
-&rarr; **Sample of Scribbled Notes**
-![[Screenshot 2023-02-12 at 9.00.05 PM.png]]
-
 &rarr; **Sample of directions**
 dispersion.caster.receiver
-
+<pre>
 d: //,,,
 d: ./
 d: //
@@ -50,6 +47,7 @@ d: G2 can you get slightly louder?
 d: fade in
 d: G1 come back in, relate to G4
 d: G3 acoustic relate to G4
+</pre>
 
 ---
 #### Summary of Code Updates
@@ -63,5 +61,8 @@ d: G3 acoustic relate to G4
 - Controller used is the Tremon Gamepad. (PS4, and Logitech controllers were tried without success.)
 - Mapping is directed related to the common commands from the conductor.
 
-![[tremon-usb-joypad-800x800-3954157190.jpeg]]
-![[Screenshot 2023-02-13 at 7.56.45 PM.png]]
+**Images**
+ ![[Screenshot 2023-02-12 at 9.00.05 PM.png]] Sample of In Class Scribbled Notes
+ ![[tremon-usb-joypad-800x800-3954157190.jpeg]] Photo of Joystick
+![[Screenshot 2023-02-13 at 7.56.45 PM 1.png]] Joystick Mapping Notes
+
