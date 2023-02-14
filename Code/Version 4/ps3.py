@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
-#ps3 wireless controller interface by Robin Newman July 2017
-#converts controller inputs to OSC messages
-#which can be output to Sonic Pi 3, running on the local computer, or on an external machine
-#rtested with ps3 "afterglow" wireless controller, dongle in Pi usb socket
-#needs sudo apt-get install joystick after sudo apt-get update
-#also needs sudo pip3 install python-osc
-#Version 2. Modified to ensure clean exit on Ubuntu
+# Adapted by Jevi from Robin Newman July 2017 for use with Tremon Controllor 
+# converts controller inputs to OSC messages
+# Run using python3.10 .ps3.py --sp 10.0.0.240
+
 
 import subprocess,pygame,sys
 from signal import pause
