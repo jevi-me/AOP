@@ -17,7 +17,7 @@ use_cue_logging true
 
 # Set values used to communicate with the live_loops
 set :adjtone, 0 #between 0 and 2
-set :adjvol, 2 #volume between 0 and 2
+set :adjvol, 1 #volume between 0 and 2
 set :mutectrl, 0 #mute on, or mute off
 set :syn_pointer,0 #current synth pointer
 set :syn, :dark_ambience #current synth name
@@ -38,7 +38,7 @@ end
  live_loop :bt6 do  #Vol up
     use_real_time
     b=sync "/osc*/b6"
-    p = get(:adjvol)+0.10
+    p = get(:adjvol)+0.05
     set :adjvol, [p,2].min
     puts "volume set",p_prnt(get(:adjvol))
     sleep 0.4
@@ -47,7 +47,7 @@ end
  live_loop :bt4 do #Vol down
     use_real_time
     b=sync "/osc*/b4"
-    p = get(:adjvol)-0.10 
+    p = get(:adjvol)-0.05 
     set :adjvol, [p, 0].max
     puts "volume set",p_prnt(get(:adjvol))
     sleep 0.4
@@ -80,7 +80,8 @@ end
 # -- Cycle Synth --
 live_loop :rud do 
   use_real_time
-  slist=[:dark_ambience,:sine,:tri,:fm,:saw,:prophet,:mod_fm,:mod_saw,:tb303] #listed in order or softest to loudest
+  #slist=[:dark_ambience,:sine,:tri,:fm,:saw,:prophet,:mod_fm,:mod_saw,:tb303] #listed in order or softest to loudest
+  slist=[:dark_ambience, :growl, :beep, :mod_beep, :tri, :fm, :mod_fm, :pretty_bell]
   b= sync "/osc*/rud"
   p=get(:syn_pointer)
   p=[p+1,slist.length-1].min if b[0] > 0.4
@@ -109,21 +110,29 @@ end
   live_loop :bt9 do
     use_real_time
     b= sync "/osc*/b9"
-    slist= [:dark_ambience,:sine,:tri,:fm,:saw,:prophet,:mod_fm,:mod_saw,:tb303]
-    ranSyn= [rrand_i(0, 8), rrand_i(0,8), rrand_i(0, 8)]
-    ranNote=[rrand_i(1, 120), rrand_i(1,120), rrand_i(1, 120)]
-    synth slist[ranSyn[0]],note: ranNote[0],attack: 0.1,release: 0.2,amp: get(:adjvol)  if b[0]==1
-    synth slist[ranSyn[1]],note: ranNote[1],attack: 0.1,release: 0.2,amp: get(:adjvol)   if b[0]==1
-    synth slist[ranSyn[2]],note: ranNote[2],attack: 0.1,release: 0.2,amp: get(:adjvol)   if b[0]==1
+    slist= [:mod_beep, :growl, :dark_ambience, :growl, :fm]
+    ranSyn= [rrand_i(0, slist.length-1), rrand_i(0,slist.length-1), rrand_i(0, slist.length-1)]
+    ranNote=[rrand_i(50, 120), rrand_i(50,120), rrand_i(50, 120)]
+    ranAttack=[rrand(0, 1), rrand(0,1), rrand(0, 1)]
+    ranRelease=[rrand(0, 1), rrand(0,1), rrand(0, 1)]
+    ranPan= [rrand_i(-1, 1), rrand(-1,1), rrand_i(-1, 1)]
+    if(rrand_i(0,10) > 1)
+    synth slist[ranSyn[0]],note: ranNote[0],attack: ranAttack[0], release: ranRelease[0], pan: ranPan[0], amp: 0.01  if b[0]==1
+    synth slist[ranSyn[1]],note: ranNote[1],attack: ranAttack[1], release: ranRelease[1], pan: ranPan[1], amp: 0.01  if b[0]==1
+    synth slist[ranSyn[2]],note: ranNote[2],attack: ranAttack[2], release: ranRelease[2], pan: ranPan[2], amp: 0.01  if b[0]==1
+  else
+    synth :cnoise, sustain: 0.5, amp: 0.001 if b[0]==1
+    sleep 0.4
+  end
   end
 
 #### PLAYING
   live_loop :bt0 do
     use_real_time
     b= sync "/osc*/b0"
-    synth get(:syn),note: :g4,attack: 0.1,release: 0.2,amp: get(:adjvol)   if b[0]==1
+    synth get(:syn),note: :g4,attack: 0.1,release: 0.2,amp: get(:adjvol)  if b[0]==1
     synth get(:syn),note: :c4,attack: 0.1,release: 0.2,amp: get(:adjvol)    if b[0]==1
-    synth get(:syn),note: get(:pitch),attack: 0.1,release: 0.2,amp: get(:adjvol)    if b[0]==1
+    synth get(:syn),note: get(:pitch),attack: 0.1,release: 0.2,amp: get(:adjvol)   if b[0]==1
 
   end
 
