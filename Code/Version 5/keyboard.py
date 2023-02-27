@@ -3,18 +3,13 @@
 # https://stackoverflow.com/questions/24072790/how-to-detect-key-presses
 # https://www.rapidtables.com/code/text/ascii-table.html?viewsel=on
 
-import sys
-import tty
-import os
-import termios
-import subprocess
+import sys, tty, os, termios, subprocess
 from pythonosc import osc_message_builder
 from pythonosc import udp_client
-import argparse
 from time import sleep
 
 gate = 0.1
-spip = '10.0.0.240' #Change me
+spip = '10.0.0.240' #Change me to match Sonic Pi
 sender = udp_client.SimpleUDPClient(spip, 4560)  # sender set up for specified IP
 print(">>> Note: IP address is hardcoded. Be sure to change.")
 
@@ -42,6 +37,8 @@ def getkey():
             return key_mapping.get(k, chr(k))
     finally:
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
+
+
 try:
     while True:
         k = getkey()

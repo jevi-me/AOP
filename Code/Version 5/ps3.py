@@ -4,12 +4,11 @@
 # Run using python3.10 .ps3.py --sp 10.0.0.240
 
 
-import subprocess,pygame,sys
+import subprocess,pygame,sys,argparse
 from getkey import getkey
 from signal import pause
 from pythonosc import osc_message_builder
 from pythonosc import udp_client
-import argparse
 from time import sleep
 
 
@@ -21,7 +20,7 @@ joyNum = pygame.joystick.get_count();
 #print(joyNum)
 clock=pygame.time.Clock()
 ps3 = pygame.joystick.Joystick(0)
-joyName = print(ps3.get_name())
+#joyName = print(ps3.get_name())
 #print(joyName)
 
 ps3.init()
@@ -103,7 +102,6 @@ if __name__=="__main__":
     default="127.0.0.1", help="The ip to listen on")
     args = parser.parse_args()
     spip=args.sp
-    print("Sonic Pi on ip",spip)
+    print("Sonic Pi on ip ",spip)
     sleep(2)
     control(spip)
-    

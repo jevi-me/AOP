@@ -10,6 +10,15 @@
 # Uses a game controller as part of an interactive
 # instrument that allows me to perform within the ensemble.
 
+# Supporting Scripts
+# python3.10 ps3.py --sp 10.0.0.240
+# python3.10 keyboard.py;     
+
+# Mode 1: Choose from 8 synths three-note-chords at 3 different pitches = 24 unique sounds
+# Mode 2: Choose from 4 electronic single note sounds = 4 sounds
+# Mode 3: Choose from 4 glitchy single note sounds = 4 sounds
+# Sustain Play: Cycles between 3 note combinations of 5 sounds, at random pitch (between 50-120), attack (between 0.0 and 1.0), release (between 0.0 and 1.0) and pan (-1, 0, 1).
+
 use_debug true
 use_cue_logging true
 
@@ -25,14 +34,30 @@ set :pitch_pointer, 0 # current pitch pointer
 set :pitch, 1 #curent pitch
 set :improvise, 0 #on or off
 set :mutectrl, 0 #mute on, or mute off
-set :mode, 1 #mode 1 or 2
+set :mode, 1 #mode 1, 2 or 3
 
 # Pretty Printing function
 define :p_prnt do |n|
   return (n.to_f*100).round.to_f/100
 end
 
-#### CONTROLS
+
+
+#### CONTROLS: KEYBOARD AND CONTROLLER
+
+# -- Keyboard
+live_loop :key do 
+  use_real_time
+  b = sync "/osc*/key"
+  print b[0]
+  if b[0] == "1"
+    set :mode, 1
+  elsif b[0] == "2"
+    set :mode, 2
+  elsif b[0] == "3"
+    set :mode, 3
+  end
+end
 
 # -- Mute and Volume
 live_loop :bt6 do  #Vol up
@@ -77,35 +102,6 @@ live_loop :bt8 do #Mute
   sleep 0.4
 end
 
-# -- Cycle Synth --
-live_loop :rud do
-  use_real_time
-  #slist=[:dark_ambience,:sine,:tri,:fm,:saw,:prophet,:mod_fm,:mod_saw,:tb303]
-  slist=[:dark_ambience, :growl, :beep, :mod_beep, :tri, :fm, :mod_fm, :pretty_bell] #listed in order or softest to loudest
-  b= sync "/osc*/rud"
-  p=get(:syn_pointer)
-  p=[p+1,slist.length-1].min if b[0] > 0.4
-  p=[p-1,0].max if b[0] < -0.4
-  set :syn_pointer,p
-  set(:syn,slist[p])
-  puts "syn is",get(:syn)
-  sleep 0.4
-end
-
-# -- Adjust Pitch --
-live_loop :rlr do
-  use_real_time
-  plist=[-1,0,1]
-  b= sync "/osc*/rlr"
-  p=get(:pitch_pointer)
-  p=[p+1,plist.length-1].min if b[0] > 0.4
-  p=[p-1,0].max if b[0] < -0.4
-  set :pitch_pointer,p
-  set(:pitch,plist[p]*24+60)
-  puts "pitch is",get(:pitch)
-  sleep 0.4
-end
-
 # -- Improvise and Noise --
 live_loop :bt9 do
   use_real_time
@@ -129,9 +125,39 @@ live_loop :bt9 do
   end
 end
 
+# -- Mode 1 Synth Cycle  --
+live_loop :rud do
+  use_real_time
+  slist=[:dark_ambience, :growl, :beep, :mod_beep, :tri, :fm, :mod_fm, :pretty_bell] #listed in order or softest to loudest
+  b= sync "/osc*/rud"
+  p=get(:syn_pointer)
+  p=[p+1,slist.length-1].min if b[0] > 0.4
+  p=[p-1,0].max if b[0] < -0.4
+  set :syn_pointer,p
+  set(:syn,slist[p])
+  puts "syn is",get(:syn)
+  sleep 0.4
+end
+
+# -- Mode 1 Adjust Pitch --
+live_loop :rlr do
+  use_real_time
+  plist=[-1,0,1]
+  b= sync "/osc*/rlr"
+  p=get(:pitch_pointer)
+  p=[p+1,plist.length-1].min if b[0] > 0.4
+  p=[p-1,0].max if b[0] < -0.4
+  set :pitch_pointer,p
+  set(:pitch,plist[p]*24+60)
+  puts "pitch is",get(:pitch)
+  sleep 0.4
+end
+
+
 #### PLAYING
 ## Mode 1: Combination Notes
-## Mode 2: Single Beeps
+## Mode 2: Electric Single Notes
+## Mode 3: Glitchy Single Notes
 
 live_loop :bt0 do
   use_real_time
@@ -143,7 +169,9 @@ live_loop :bt0 do
   end
   if get(:mode)  == 2
     sample :elec_triangle, amp: get(:adjvol)
-    
+  end
+  if get(:mode)  == 3
+    sample :glitch_per1, amp: get(:adjvol)
   end
 end
 live_loop :bt1 do
@@ -156,6 +184,9 @@ live_loop :bt1 do
   end
   if get(:mode)  == 2
     sample :elec_chime , amp: get(:adjvol)
+  end
+  if get(:mode)  == 3
+    sample :glitch_per2, amp: get(:adjvol)
   end
 end
 
@@ -170,7 +201,9 @@ live_loop :bt2 do
   if get(:mode)  == 2
     sample :elec_snare, amp: get(:adjvol)
   end
-  
+  if get(:mode)  == 3
+    sample :glitch_per3, amp: get(:adjvol)
+  end
 end
 
 live_loop :bt3 do
@@ -184,14 +217,7 @@ live_loop :bt3 do
   if get(:mode) == 2
     sample :elec_filt_snare, amp: get(:adjvol)
   end
-end
-
-live_loop :space do
-  use_real_time
-  b= sync "/osc*/space"
-  if get(:mode)  == 1
-    set :mode, 2
-  elsif get(:mode) == 2
-    set :mode, 1
+  if get(:mode)  == 3
+    sample :glitch_per4, amp: get(:adjvol)
   end
 end
