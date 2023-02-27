@@ -24,7 +24,7 @@ Uses a game controller as part of an interactive instrument that allows me to pe
 
 ## Latest Progress - Verison 5
 #### Major Additions:
- - Added 3 extra modes.
+ - Added 3 modes.
  - Code update for changing modes using the keyboard. Also built-in space to allow for the keyboard to do trigger other things down the line.
  - Added a multimedia controller to the mix which has a button for volume control and quick mute. 
 
