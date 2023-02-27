@@ -171,7 +171,7 @@ live_loop :bt0 do
     sample :elec_triangle, amp: get(:adjvol)
   end
   if get(:mode)  == 3
-    sample :glitch_per1, amp: get(:adjvol)
+    sample :glitch_perc1, amp: get(:adjvol)
   end
 end
 live_loop :bt1 do
@@ -186,7 +186,7 @@ live_loop :bt1 do
     sample :elec_chime , amp: get(:adjvol)
   end
   if get(:mode)  == 3
-    sample :glitch_per2, amp: get(:adjvol)
+    sample :glitch_perc2, amp: get(:adjvol)
   end
 end
 
@@ -202,7 +202,7 @@ live_loop :bt2 do
     sample :elec_snare, amp: get(:adjvol)
   end
   if get(:mode)  == 3
-    sample :glitch_per3, amp: get(:adjvol)
+    sample :glitch_perc3, amp: get(:adjvol)
   end
 end
 
@@ -218,6 +218,6 @@ live_loop :bt3 do
     sample :elec_filt_snare, amp: get(:adjvol)
   end
   if get(:mode)  == 3
-    sample :glitch_per4, amp: get(:adjvol)
+    sample :glitch_perc4, amp: get(:adjvol)
   end
 end
