@@ -10,7 +10,7 @@
 # Uses a Akai LPD8 Mk2 Laptop Pad Controller 
 # as part of an instrument that allows both me (left channel) 
 # and the AOP (right channel) to perform within the ensemble.
-
+# Similar: https://gist.github.com/rbnpi/f995f7d9bf176e6b5d0f62baff257dc8
 
 # Midi Controls:
 #  (8) velocity-sensitive, RGB-lit pads
@@ -30,14 +30,14 @@
 
 #Knob Control Assigments
 # k1 - k[1] attack - time from 0 amplitude to the attack_level,
-# k2 - k[6] decay - time to move amplitude from attack_level to decay_level,
-# k3 - k[32] sustain - time to move the amplitude from decay_level to sustain_level,
-# k4 - k[71] release - time to move amplitude from sustain_level to 0
+# k2 - k[2] decay - time to move amplitude from attack_level to decay_level,
+# k3 - k[3] sustain - time to move the amplitude from decay_level to sustain_level,
+# k4 - k[4] release - time to move amplitude from sustain_level to 0
 
-# k5 - k[83] cutoff
-# k6 - k[74] pitch
-# k7 - k[52] density
-# k8 - k[52] volume 
+# k5 - k[5] cutoff
+# k6 - k[6] pitch
+# k7 - k[7] density
+# k8 - k[8] volume 
 
 
 #### INITIALISE AND DEFINE
@@ -47,11 +47,17 @@
 i_pos = -1 #left channel
 aop_pos = 1 #right channel
 
+
+# Store Input Data
+set :pads = [] #store pad data
+set :knobs = [] #store knob data
+
 # Values for Pads
 set :improvise, 0 #improvise, on or off
 set :trigger, 0   #trigger, on or off
 set :aop_play, 0  #aop plays, on or off 
-set :i_play, 0    #I play, on or off
+set :i_play, 1    #I play, on or off
+
 
 # Values for Knobs
 set :adjatt, 1    #attack between 0 and 2
@@ -60,29 +66,45 @@ set :adjsus, 1    #sustain between 0 and 2
 set :adjrel, 1    #release between 0 and 2
 
 set :adjcut, 1    #cutoff between 0 and 2
-set :adjvol, 1    #volume between 0 and 2, this will not be changed. <- don't think I want this
+set :adjvol, 1    #volume between 0 and 2
 set :adjdens, 1   #denisty between 0 and 2
 set :adjpitch, 1  #pitch between 0 and 2
 
-set :knobs = [[],[],[],[],
-              [],[],[],[]] 
 
 
-#### CONTROLS: MIDI
 
-## Buttons
-live_loop :buttons do 
+#### CAPTURE MIDI CONTROLS
+
+## Function to Normalise Knob Inputs
+define :norm do |n| #scale 0->127 to 0->2
+  return n.to_f/127/2
+end
+
+## Capture knob change
+live_loop :con_chg do 
   use_real_time
-  pad, vel = sync "/midi*/note_on"
+  portid, portn, knb_no, val = sync "/midi*/control_change"
+  knobs[knb_no] = norm(val) 
+  puts "knob #:", knb_no, "value:", val, "norm:", norm(val) #add to log
+end
+
+## Capture button change
+live_loop :note_on do 
+  use_real_time
+  portid, portn, pad_no, vel = sync "/midi*/note_on"
   amp = vel/127.0 # button pressure, sets play volume
-  #if k.. play whatever sample assigned to that button at that volume
+  pads[pad_no] = amp
+  puts "pad #", pad_no, "vel", vel, "amp", amp #add to log
 end
 
 
-## Knobs
-live_loop :knobs do 
-  use_real_time
-  knob,val = sync "/midi*/control_change"
+#### PLAY
+live_loop :
 end
+
+
+
+
+
 
 
