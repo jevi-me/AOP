@@ -67,11 +67,12 @@ set :adjpitch, 1  #pitch between 0 and 2
 
 # Store Input Data
 knobs = [:adjatt, :adjdec, :adjsus, :adjrel, :adjcut, :adjvol, :adjdens, :adjpitch]
-pads = Array.new(8, '0') #initilised to amp 0
 
+# Initial Ready Check
+if get(:i_ready) == 1 then puts "Ready Player I" else puts "Player I silent" end
+if get(:aop_ready) == 1 then puts "Ready Player AOP" else puts "Player AOP silent" end
 
 #### CAPTURE MIDI CONTROLS
-
 ## Function to Normalise Knob Inputs
 define :norm do |n| #scale 0->127 to 0->2
   return n.to_f/127/2
@@ -85,21 +86,41 @@ live_loop :con_chg do
   puts "knob #:", knb_no, "value:", val, "norm:", norm(val) #add to log
 end
 
+
+
+#### SECTION PLAYER INTRUMENTS
+
+#### SECTION PLAYERS
+# Play when a pad is pressed, only if the player is ready to play.
+
 ## Capture pad change
 live_loop :note_on do
+
+  #Get pad push info
   use_real_time
   portid, portn, pad_no, vel = sync "/midi*/note_on"
   amp = vel/127.0 # button pressure, sets play volume
-  pads[pad_no] = amp
   puts "pad #", pad_no, "vel", vel, "amp", amp #add to log
+
+
+  if get(:i_ready) == 1 then 
+    if pad_no == 5 then cue :pip5 end
+    if pad_no == 6 then cue :pip6 end
+    if pad_no == 7 then cue :pip7 end
+    if pad_no == 8 then cue :pip8 end
+  end
+  if get(:aop_ready) == 1 then 
+    if pad_no == 5 then cue :aoppp5 end
+    if pad_no == 6 then cue :aoppp6 end
+    if pad_no == 7 then cue :aoppp7 end
+    if pad_no == 8 then cue :aoppp8 end
+  end
+
 end
+  
+
+#      play 90, attack: :adjatt, decay: :adjdec, sustain: :adjsus, release: :adjrel, amp: amp
 
 
-#### SECTION PLAYERS
-# Play when a pad is pressed, if the player is ready.
 
-#live_loop :iplayer do
-#end
 
-#live_loop :aopplayer do
-#end
