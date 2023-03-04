@@ -54,3 +54,8 @@ Game Controller:
 Vaydeer Multimedia Controller:
 - volume button: turn adjust volume (with fine to coarse sensitivity control - three buttons above toggle)
 - volume button: push to mute/unmute
+
+
+#### Todo
+- [ ] Start minimising the number of sound selection to fine-tune the instrument.
+- [ ] Add in the new gestures learned.
