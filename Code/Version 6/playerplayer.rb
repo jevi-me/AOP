@@ -17,7 +17,7 @@
 #  (8) 270° knobs
 #  (4) UI buttons
 
-# Pad Control Assignments
+# Pad Control Assignments (Channel 1 to 8)
 # p5 - 40 - hit
 # p6 - 41 - hit
 # p7 - 42 - drone
@@ -28,7 +28,7 @@
 # p3 - i play
 # p4 - aop plays
 
-#Knob Control Assigments
+#Knob Control Assigments (Channel 10)
 # k1 - unassigned
 # k2 - decay - time to move amplitude from attack_level to decay_level,
 # k3 - sustain - time to move the amplitude from decay_level to sustain_level,
@@ -130,47 +130,92 @@ end
 # ---------------------------------------------------------
 
 ## Capture pad change on different channels
-live_loop :c2_on do
+live_loop :c5_on do
   use_real_time
-  pad_no, vel = sync "/midi*2/note_on"
+  pad_no, vel = sync "/midi*5/note_on"
   if get(:i_ready) == 1 then
     puts p_name[4]
-    use_synth :pretty_bell
-    
-    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+    #use_synth :pretty_bell
+    #play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
   end
 end
 
-live_loop :c2_cp do
+live_loop :c5_cp do
   use_real_time
-  sync "/midi*2/channel_pressure"
+  sync "/midi*5/channel_pressure"
   if get(:i_ready) == 1 then
     use_synth :pretty_bell
     play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
     sleep get(:adjdens)
   end
 end
+
+live_loop :c6_on do
+  use_real_time
+  pad_no, vel = sync "/midi*6/note_on"
+  if get(:i_ready) == 1 then
+    puts p_name[4]
+    #use_synth :fm
+    # play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+  end
+end
+
+
+live_loop :c6_cp do
+  use_real_time
+  sync "/midi*6/channel_pressure"
+  if get(:i_ready) == 1 then
+    use_synth :fm
+    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+    sleep get(:adjdens)
+  end
+end
+
+#Skip channel 7 and 8 for now
+
+live_loop :c1_cp do
+  use_real_time
+  sync "/midi*1/channel_pressure"
+  if get(:i_ready) == 1 then
+    slist= [:mod_beep, :growl, :dark_ambience, :growl, :fm]
+    
+    ranSyn= [rrand_i(0, slist.length-1), rrand_i(0,slist.length-1), rrand_i(0, slist.length-1)]
+    ranNote=[rrand_i(50, 120), rrand_i(50,120), rrand_i(50, 120)]
+    ranAttack=[rrand(0, 1), rrand(0,1), rrand(0, 1)]
+    ranRelease=[rrand(0, 1), rrand(0,1), rrand(0, 1)]
+    ranPan= [rrand_i(-1, 1), rrand(-1,1), rrand_i(-1, 1)]
+    
+    if(rrand_i(0,10) > 1)
+      synth slist[ranSyn[0]],note: ranNote[0],attack: ranAttack[0], release: ranRelease[0], pan: ranPan[0], amp: 0.01
+      synth slist[ranSyn[1]],note: ranNote[1],attack: ranAttack[1], release: ranRelease[1], pan: ranPan[1], amp: 0.01
+      synth slist[ranSyn[2]],note: ranNote[2],attack: ranAttack[2], release: ranRelease[2], pan: ranPan[2], amp: 0.01
+    else
+      synth :cnoise, sustain: 0.5, amp: 0.001
+      sleep get(:adjdens)
+    end
+  end
+end
+
+#Skip channel 2 for now
 
 live_loop :c3_on do
   use_real_time
   pad_no, vel = sync "/midi*3/note_on"
+  
   if get(:i_ready) == 1 then
-    puts p_name[4]
-    use_synth :fm
-    
-    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+    set :i_ready, 0
+  elsif get(:i_ready) == 0 then
+    set :i_ready, 1
   end
 end
 
-live_loop :c3_cp do
+live_loop :c4_on do
   use_real_time
-  sync "/midi*3/channel_pressure"
-  if get(:i_ready) == 1 then
-    use_synth :fm
-    
-    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
-    sleep get(:adjdens)
-    
+  pad_no, vel = sync "/midi*4/note_on"
+  
+  if get(:aop_ready) == 1 then
+    set :aop_ready, 0
+  elsif get(:aop_ready) == 0 then
+    set :aop_ready, 1
   end
 end
-
