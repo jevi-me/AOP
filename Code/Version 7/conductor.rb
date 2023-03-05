@@ -14,6 +14,8 @@
 ## Define and Initialise values used to communicate with the players
 # ---------------------------------------------------------
 
+use_osc "localhost", 4560
+
 # Values for Game Controller
 c_name=["hit1","drone2", "hit2", "drone1",
         "improv_burst","trigger-up", "trigger-down"] #game controller
@@ -69,38 +71,46 @@ live_loop :knb_chg do
   if knb_no == 1 then
     set :ctrl_d1, val
     puts k_name[0], val
+    osc "/enviro", "ctrl_d1", val
   end
   if knb_no == 2 then
     set :ctrl_d2, val
     puts k_name[1], val
+    osc "/enviro", "ctrl_d2", val
   end
   if knb_no == 3 then
     set :adjpitch, (val*50 + 50)
     puts k_name[2], (val*50 + 50)
+    osc "/enviro", "adjpitch", (val*50 + 50)
   end
   if knb_no == 4 then
     set :adjdens, val
     puts k_name[3], val
+    osc "/enviro", "adjdens", val
   end
   
   
   if knb_no == 5 then
     set :adjdec, (val*2 + 0.2)
     puts k_name[4], (val*2 + 0.2)
+    osc "/enviro", "adjdec", (val*2 + 0.2)
   end
   
   if knb_no == 6 then
     set :adjsus, val
     puts k_name[5], val
+    osc "/enviro", "adjsus", val
   end
   
   if knb_no == 7 then
     set :adjrel, (val + 0.08)
     puts k_name[6], (val + 0.08)
+    osc "/enviro", "adjrel", (val + 0.08)
   end
   if knb_no == 8 then
     set :adjvol, val
     puts k_name[7], val
+    osc "/enviro", "adjvol", val
   end
 end
 
@@ -113,36 +123,44 @@ live_loop :pad_chg do
   if pad_no == 5 then
     puts p_name[4], val
     set :mode1, val
+    osc "/modes", "mode1", val
   end
   if pad_no == 6 then
     puts p_name[5]
     set :mode2, val
+    osc "/modes", "mode2", val
   end
   if pad_no == 7 then
     puts p_name[6], val
     set :improv1, val
+    osc "/modes", "improv1", val
   end
   
   if pad_no == 8 then
     puts p_name[7], val
     set :improv2, val
+    osc "/modes", "improv2", val
   end
   
   if pad_no == 1 then
     puts p_name[0], val
     set :mode3, val
+    osc "/modes", "mode3", val
   end
   if pad_no == 2 then
     puts p_name[1], val
     set :mode4, val
+    osc "/modes", "mode4", val
   end
   if pad_no == 3 then
     puts p_name[2], val
     set :i_ready, val
+    osc "/modes", "i_ready", val
   end
   if pad_no == 4 then
     puts p_name[3], val
     set :aop_ready, val
+    osc "/modes", "aop_ready", val
   end
 end
 
@@ -153,12 +171,14 @@ live_loop :bt0 do #1
   use_real_time
   b= sync "/osc*/b0"
   puts c_name[0]
+  osc "/play", "hit1", 1
 end
 
 live_loop :bt2 do #3
   use_real_time
   b= sync "/osc*/b2"
   puts c_name[2]
+  osc "/play", "hit2", 1
 end
 
 
@@ -167,9 +187,11 @@ live_loop :rud do #up/down
   b= sync "/osc*/rud"
   if b[0] > 0
     puts c_name[0]
+    osc "/play", "hit1", 1
   end
   if b[0] < 0
     puts c_name[2]
+    osc "/play", "hit2", 1
   end
 end
 
@@ -178,12 +200,14 @@ live_loop :bt3 do #4
   use_real_time
   b= sync "/osc*/b3"
   puts c_name[3]
+  osc "/play", "drone1", 1
 end
 
 live_loop :bt1 do #2
   use_real_time
   b= sync "/osc*/b1"
   puts c_name[1]
+  osc "/play", "drone2", 1
 end
 
 
@@ -192,9 +216,11 @@ live_loop :rlr do # left/right
   b= sync "/osc*/rlr"
   if b[0] > 0
     puts c_name[1]
+    osc "/play", "drone1", 1
   end
   if b[0] < 0
     puts c_name[3]
+    osc "/play", "drone2", 1
   end
 end
 
@@ -203,12 +229,15 @@ live_loop :bt9 do #Start
   use_real_time
   b= sync "/osc*/b9"
   puts c_name[4]
+  osc "/play", "improv_burst", 1
+  
 end
 
 live_loop :bt8 do #Select
   use_real_time
   b=sync "/osc*/b8"
   puts c_name[4]
+  osc "/play", "improv_burst", 1
 end
 
 
@@ -217,22 +246,28 @@ live_loop :bt6 do  #Left Up
   use_real_time
   b=sync "/osc*/b6"
   puts c_name[5]
+  osc "/play", "trigger-up", 1
 end
 
 live_loop :bt4 do #Left down
   use_real_time
   b=sync "/osc*/b4"
   puts c_name[6]
+  osc "/play", "trigger-down", 1
+  
 end
 
 live_loop :bt7 do  #Right Up
   use_real_time
   b=sync "/osc*/b7"
   puts c_name[5]
+  osc "/play", "trigger-up", 1
+  
 end
 
 live_loop :bt5 do #Right Down
   use_real_time
   b=sync "/osc*/b5"
   puts c_name[6]
+  osc "/play", "trigger-down", 1
 end
