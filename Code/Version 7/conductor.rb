@@ -9,29 +9,20 @@
 # as part of an instrument that allows both me (left channel)
 # and the AOP (right channel) to perform within an ensemble.
 
-
-p_name=["mode3","mode4","i_play","aop+play", #pads
-        "mode1","mode2","improvise1","improvise2"]
-
-k_name=["ctrl_d1","ctrl_d2","pitch", "density",
-        "decay","sustain","release","volume"] #knobs
-
-c_name=["hit1","drone2", "hit2", "drone1",
-        "improv_burst","trigger-up", "trigger-down"] #game controller
-
 # ---------------------------------------------------------
 #### INITIALISE AND DEFINE STATES
 ## Define and Initialise values used to communicate with the players
 # ---------------------------------------------------------
 
-# Pan Position of Player and AOP in sound environment
-set :i_pos, -1 #left channel
-set :aop_pos, 1 #right channel
-
 # Values for Game Controller
+c_name=["hit1","drone2", "hit2", "drone1",
+        "improv_burst","trigger-up", "trigger-down"] #game controller
 
 
-# Values for Pads (Toggle Mode)
+# Values for Pads (Toggle Mode, Note Play)
+p_name=["mode3","mode4","i_play","aop+play", #pads
+        "mode1","mode2","improvise1","improvise2"]
+
 set :mode1, 0     #on or off
 set :mode2, 0     #on of off
 set :improv1, 0   #on or off
@@ -44,6 +35,9 @@ set :aop_ready, 0  #aop plays, on or off
 
 
 # Value for Knobs
+k_name=["ctrl_d1","ctrl_d2","pitch", "density",
+        "decay","sustain","release","volume"] #knobs
+
 set :ctrl_d1, 0   #control drone 1 rate  between 0 and 1
 set :ctrl_d2, 0    #control drone 2 rate  between 0 and 1
 set :adjpitch, 50  #pitch between 0*50 +50 and 1*50 + 50
@@ -58,16 +52,15 @@ set :adjvol, 0    #volume between 0 and 1
 #### CAPTURE CONTROLS
 # ---------------------------------------------------------
 
-## Function to Normalise Knob Inputs
+## Function to Normalise Inputs
 define :normf do |n| #scale 0->127 to 0->1
   return n.to_f/127
 end
-
 define :norm do |n| #scale 0->127 to 0->1
   return n/127
 end
 
-## Capture knob change
+## Capture knob change (Channel 2)
 live_loop :knb_chg do
   use_real_time
   knb_no, val = sync "/midi*/control_change"
@@ -111,7 +104,7 @@ live_loop :knb_chg do
   end
 end
 
-## Capture Pad Change
+## Capture Pad Change (Channel 1)
 live_loop :pad_chg do
   use_real_time
   pad_no, val = sync "/midi*/note*"
@@ -154,7 +147,7 @@ live_loop :pad_chg do
 end
 
 
-## Capture Game Controller Buttons
+## Capture Game Controller Buttons (OSC)
 # Hits
 live_loop :bt0 do #1
   use_real_time
