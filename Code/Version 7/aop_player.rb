@@ -10,6 +10,8 @@
 # and the AOP (right channel) to perform within an ensemble.
 
 
+### UNEDITTED
+
 p_name=["mode1","mode2","improvise1","improveise2",
         "mode3","mode4","i_play","aop+play"] #pads
 
