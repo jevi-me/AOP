@@ -29,18 +29,18 @@
 # p4 - aop plays
 
 #Knob Control Assigments
-# k1 - k[70] attack - time from 0 amplitude to the attack_level,
+# k1 - k[70] unassigned
 # k2 - k[71] decay - time to move amplitude from attack_level to decay_level,
 # k3 - k[72] sustain - time to move the amplitude from decay_level to sustain_level,
 # k4 - k[73] release - time to move amplitude from sustain_level to 0
 
-# k5 - k[74] cutoff
+# k5 - k[74] unassigned
 # k6 - k[75] pitch
 # k7 - k[76] density
 # k8 - k[76] volume
 
 p_name=["improvise","trigger","i_play","aop+play","hit1","hit2","drone1","drone2"]
-k_name=["attack","decay","sustain","release","cutoff","pitch","density","volume"]
+k_name=["unassigned","decay","sustain","release","unassigned","pitch","density","volume"]
 # ---------------------------------------------------------
 #### INITIALISE AND DEFINE
 ## Define and Initialise values used to communicate with the live_loops
@@ -58,12 +58,10 @@ set :aop_ready, 0  #aop plays, on or off
 
 
 # Values for Knobs
-set :adjatt, 0    #attack between 0 and 1
 set :adjdec, 0    #decay between 0 and 1
 set :adjsus, 0    #sustain between 0 and 1
-set :adjrel, 0    #release between 0+0.8 and 1+ 0.8
+set :adjrel, 0.8    #release between 0+0.8 and 1+ 0.8
 
-set :adjcut, 20    #cutoff between 0*20 +20 and 1*20 + 20
 set :adjpitch, 50  #pitch between 0*50 +50 and 1*50 + 50
 set :adjdens, 1   #denisty between 0 and 1
 set :adjvol, 1    #volume between 0 and 1
@@ -91,7 +89,6 @@ live_loop :con_chg do
   val = norm(val)
   
   if knb_no == 70 then
-    set :adjatt, val
     puts k_name[0], val
   end
   if knb_no == 71 then
@@ -103,13 +100,13 @@ live_loop :con_chg do
     puts k_name[2], val
   end
   if knb_no == 73 then
-    set :adjrel, val
+    set :adjrel, (val + 0.08)
     puts k_name[3], (val + 0.08)
   end
   
+  
   if knb_no == 74 then
-    set :adjcut, (val*20 + 50)
-    puts k_name[4], (val*20 + 50)
+    puts k_name[4], val
   end
   if knb_no == 75 then
     set :adjpitch, (val*50 + 50)
@@ -143,10 +140,13 @@ live_loop :note_on do
   if get(:i_ready) == 1 then
     if pad_no == 40 then
       puts p_name[4]
-      use_synth :dsaw
-      play get(:adjpitch), attack: get(:adjatt), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), cutoff: get(:adjcut), pan: get(:i_pos)
+      use_synth :mod_beep
+      play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
     end
-    if pad_no == 41 then  puts p_name[5] end
+    if pad_no == 41 then
+      puts p_name[5]
+      sample :elec_triangle, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+    end
     if pad_no == 42 then  puts p_name[6] end
     if pad_no == 43 then  puts p_name[7] end
   end
