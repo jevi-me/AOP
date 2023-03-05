@@ -18,10 +18,10 @@
 #  (4) UI buttons
 
 # Pad Control Assignments
-# p5 - hit
-# p6 - hit
-# p7 - drone
-# p8 - drone
+# p5 - 40 - hit
+# p6 - 41 - hit
+# p7 - 42 - drone
+# p8 - 43 - drone
 
 # p1 - improvise
 # p2 - trigger
@@ -29,17 +29,18 @@
 # p4 - aop plays
 
 #Knob Control Assigments
-# k1 - k[1] attack - time from 0 amplitude to the attack_level,
-# k2 - k[2] decay - time to move amplitude from attack_level to decay_level,
-# k3 - k[3] sustain - time to move the amplitude from decay_level to sustain_level,
-# k4 - k[4] release - time to move amplitude from sustain_level to 0
+# k1 - k[70] attack - time from 0 amplitude to the attack_level,
+# k2 - k[71] decay - time to move amplitude from attack_level to decay_level,
+# k3 - k[72] sustain - time to move the amplitude from decay_level to sustain_level,
+# k4 - k[73] release - time to move amplitude from sustain_level to 0
 
-# k5 - k[5] cutoff
-# k6 - k[6] pitch
-# k7 - k[7] density
-# k8 - k[8] volume
+# k5 - k[74] cutoff
+# k6 - k[75] pitch
+# k7 - k[76] density
+# k8 - k[76] volume
 
-
+p_name=["hit1","hit2","drone1","drone2","improvise","trigger","i_play","aop+play"]
+k_name=["attack","decay","sustain","release","cutoff","pitch","density","volume"]
 # ---------------------------------------------------------
 #### INITIALISE AND DEFINE
 ## Define and Initialise values used to communicate with the live_loops
@@ -58,22 +59,20 @@ set :aop_ready, 0  #aop plays, on or off
 
 # Values for Knobs
 set :adjatt, 0    #attack between 0 and 1
-set :adjdec, 0.25    #decay between 0 and 1
+set :adjdec, 0    #decay between 0 and 1
 set :adjsus, 0    #sustain between 0 and 1
-set :adjrel, 0.25    #release between 0 and 1
+set :adjrel, 0    #release between 0 and 1
 
-set :adjcut, 1    #cutoff between 0 and 1
-set :adjvol, 1    #volume between 0 and 1
+set :adjcut, 20    #cutoff between 0*20 +20 and 1*20 + 20
+set :adjpitch, 50  #pitch between 0*50 +50 and 1*50 + 50
 set :adjdens, 1   #denisty between 0 and 1
-set :adjpitch, 1  #pitch between 0 and 1
+set :adjvol, 1    #volume between 0 and 1
 
-# Store Input Data
-knobs = [:adjatt, :adjdec, :adjsus, :adjrel, :adjcut, :adjvol, :adjdens, :adjpitch]
 
 # Initial Ready Check
-if get(:i_ready) == 1 then puts "Ready Player I" else puts "Player I silent" end
-if get(:aop_ready) == 1 then puts "Ready Player AOP" else puts "Player AOP silent" end
 
+# if get(:i_ready) == 1 then puts "Ready Player I" else puts "Player I silent" end
+# if get(:aop_ready) == 1 then puts "Ready Player AOP" else puts "Player AOP silent" end
 
 
 # ---------------------------------------------------------
@@ -81,16 +80,50 @@ if get(:aop_ready) == 1 then puts "Ready Player AOP" else puts "Player AOP silen
 ## Function to Normalise Knob Inputs
 # ---------------------------------------------------------
 
-define :norm do |n| #scale 0->127 to 0->2
+define :norm do |n| #scale 0->127 to 0->1
   return n.to_f/127
 end
 
 ## Capture knob change
 live_loop :con_chg do
   use_real_time
-  portid, portn, knb_no, val = sync "/midi*/control_change"
-  knobs[knb_no] = norm(val)
-  puts "knob #:", knb_no, "value:", val, "norm:", norm(val) #add to log
+  knb_no, val = sync "/midi*/control_change"
+  val = norm(val)
+  
+  if knb_no == 70 then
+    set :adjatt, val
+    puts k_name[0], val
+  end
+  if knb_no == 71 then
+    set :adjdec, val
+    puts k_name[1], val
+  end
+  if knb_no == 72 then
+    set :adjsus, val
+    puts k_name[2], val
+  end
+  if knb_no == 73 then
+    set :adjrel, val
+    puts k_name[3], val
+  end
+  
+  if knb_no == 74 then
+    set :adjcut, (val*20 + 50)
+    puts k_name[4], (val*20 + 50)
+  end
+  if knb_no == 75 then
+    set :adjpitch, (val*50 + 50)
+    puts k_name[5], (val*50 + 50)
+  end
+  if knb_no == 76 then
+    set :adjdens, val
+    puts k_name[6], val
+  end
+  if knb_no == 77 then
+    set :adjvol, val
+    puts k_name[7], val
+  end
+  
 end
 
 
@@ -104,45 +137,22 @@ live_loop :note_on do
   
   #Get pad push info
   use_real_time
-  portid, portn, pad_no, vel = sync "/midi*/note_on"
-  amp = vel/127.0 # button pressure, sets play volume
-  puts "pad #", pad_no, "vel", vel, "amp", amp #add to log
-  
-  set :adjvol, amp
+  pad_no, vel = sync "/midi*/note_on"
   
   #Cue the sound for each pad
   if get(:i_ready) == 1 then
-    if pad_no == 5 then cue :pip5 end
-    if pad_no == 6 then cue :pip6 end
-    if pad_no == 7 then cue :pip7 end
-    if pad_no == 8 then cue :pip8 end
+    if pad_no == 40 then
+      play get(:adjpitch), attack: get(:adjatt), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), cutoff: get(:adjcut), pan: get(:i_pos)
+    end
+    if pad_no == 41 then cue :pip6 end
+    if pad_no == 42 then cue :pip7 end
+    if pad_no == 43 then cue :pip8 end
   end
   if get(:aop_ready) == 1 then
-    if pad_no == 5 then cue :aoppp5 end
-    if pad_no == 6 then cue :aoppp6 end
-    if pad_no == 7 then cue :aoppp7 end
-    if pad_no == 8 then cue :aoppp8 end
-  end
-  
-end
-
-# ---------------------------------------------------------
-#### SECTION PLAYER INTRUMENTS
-# ---------------------------------------------------------
-
-# i player: hit 1, hit 2, drone 1, drone 2
-# aop player: hit 3, hit 4, drone 3, drone 4
-
-#in_thread (name: :hit1) do
-#  sync :pip5
-#  sample :elec_filt_snare, attack: :adjatt, decay: :adjdec, sustain: :adjsus, release: :adjrel, amp: amp
-#end
-
-in_thread(name: :hit1) do
-  
-  loop do
-    play 60, attack: get(:adjatt), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
-    sleep 5
+    if pad_no == 40 then cue :aopp5 end
+    if pad_no == 41 then cue :aopp6 end
+    if pad_no == 42 then cue :aopp7 end
+    if pad_no == 43 then cue :aopp8 end
   end
   
 end
