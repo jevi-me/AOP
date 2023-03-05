@@ -151,10 +151,12 @@ live_loop :drone1_on do
   use_real_time
   pad_no, vel = sync "/osc*/play/drone1"
   if get(:i_ready) == 1 then
-    use_synth :mod_beep
-    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol)/2, pan: get(:i_pos)
+    use_synth :fm
+    with_fx :vowel, vowel_sound: 1, voice: 1 do
+      play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol)/4, pan: get(:i_pos)
+    end
+    sleep get(:adjdens) + 0.2
   end
-  sleep (get(:adjdens) + get(:adjdec) + get(:adjsus))
 end
 
 
@@ -163,48 +165,10 @@ live_loop :drone2_on do
   use_real_time
   pad_no, vel = sync "/osc*/play/drone2"
   if get(:i_ready) == 1 then
-    use_synth :mod_tri
-    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol)/2, pan: get(:i_pos)
-    sleep (get(:adjdens) + get(:adjdec) + get(:adjsus))
+    use_synth :fm
+    with_fx :vowel, vowel_sound: 5, voice: 4 do
+      play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol)/4, pan: get(:i_pos)
+      sleep get(:adjdens) + 0.2
+    end
   end
-end
-
-# Improvise
-live_loop :c1_on do
-  use_real_time
-  sync "osc*/play/improv_burst"
-end
-
-
-#########################################
-# CHORD DEFINITIONS
-#########################################
-cMjI =      chord(:C, :major7)
-cMjII =     chord(:D, :minor7)
-cMjIII =    chord(:E, :minor7)
-cMjIV =     chord(:F, :major7)
-cMjV =      chord(:G, "7")
-cMjVI =     chord(:A, :minor7)
-
-define :chord_player do |c|
-  use_synth :dark_ambience
-  with_fx :vowel, vowel_sound: 5, voice: 4 do
-    play c, attack: 0.1, release: get(:adjrel), amp: get(:adjvol)
-  end
-  
-  use_synth :piano
-  with_fx :vowel, vowel_sound: 1, voice: 1 do
-    play c, attack: 0.2, release: get(:adjrel), amp: get(:adjvol)
-  end
-  
-  use_synth :growl
-  with_fx :vowel, vowel_sound: 4, voice: 2 do
-    play c, attack: 0.1,  release: get(:adjrel), amp: get(:adjvol)
-  end
-  
-  use_synth :organ_tonewheel
-  with_fx :ping_pong do
-    play c, attack: 0.3, release: get(:adjrel) , amp: get(:adjvol)
-  end
-  sleep (get(:adjsus) + get(:adjrel) + get(:adjdec))*(1-get(:adjdens))
 end
