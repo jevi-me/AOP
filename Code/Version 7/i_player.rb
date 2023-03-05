@@ -17,9 +17,8 @@ use_cue_logging false
 ## Define and Initialise the values used to control the intrument
 # ---------------------------------------------------------
 
-# Pan Position of Player and AOP in sound environment
+# Pan Position in sound environment
 set :i_pos, -1 #left channel
-#set :aop_pos, 1 #right channel
 
 
 # Values for Pads (Toggle Mode, Note Play)
@@ -51,7 +50,7 @@ set :adjvol, 0    #volume between 0 and 1
 # ---------------------------------------------------------
 
 ## Capture environemnt - knob changes
-live_loop :enviro do
+live_loop :enviro_ip do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro"
   #puts knb_name, val
@@ -86,7 +85,7 @@ end
 
 
 ## Capture modes - pad changes
-live_loop :modes do
+live_loop :modes_ip do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes"
   #puts pad_name, val
@@ -124,7 +123,7 @@ end
 # ---------------------------------------------------------
 
 ## Hit 1
-live_loop :hit1_on do
+live_loop :ip_hit1_on do
   use_real_time
   pad_no, vel = sync "/osc*/play/hit1"
   if get(:i_ready) == 1 then
@@ -136,7 +135,7 @@ end
 
 
 ## Hit 2
-live_loop :hit2_on do
+live_loop :ip_hit2_on do
   use_real_time
   pad_no, vel = sync "/osc*/play/hit2"
   if get(:i_ready) == 1 then
@@ -147,7 +146,7 @@ live_loop :hit2_on do
 end
 
 ## Drone 1
-live_loop :drone1_on do
+live_loop :ip_drone1_on do
   use_real_time
   pad_no, vel = sync "/osc*/play/drone1"
   if get(:i_ready) == 1 then
@@ -161,7 +160,7 @@ end
 
 
 ## Drone 2
-live_loop :drone2_on do
+live_loop :ip_drone2_on do
   use_real_time
   pad_no, vel = sync "/osc*/play/drone2"
   if get(:i_ready) == 1 then
