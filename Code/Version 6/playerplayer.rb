@@ -130,10 +130,9 @@ end
 # ---------------------------------------------------------
 
 ## Capture pad change
-live_loop :note_on do
+live_loop :hit1 do
   use_real_time
   pad_no, vel = sync "/midi*2/note_on"
-  #Cue the sound for each pad
   if get(:i_ready) == 1 then
     puts p_name[4], vel
     use_synth :dsaw
@@ -142,10 +141,14 @@ live_loop :note_on do
   end
 end
 
-live_loop :hit1 do
+live_loop :hit1_s do
   use_real_time
   vel = sync "/midi*2/channel_pressure"
-  use_synth :dsaw
-  play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos) if vel > 0
+  if vel != 0 then
+    live_loop :h do
+      use_synth :dsaw
+      play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+      sleep 0.1
+    end
+  end
 end
-
