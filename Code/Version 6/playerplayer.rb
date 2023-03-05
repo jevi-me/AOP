@@ -29,15 +29,15 @@
 # p4 - aop plays
 
 #Knob Control Assigments
-# k1 - k[70] unassigned
-# k2 - k[71] decay - time to move amplitude from attack_level to decay_level,
-# k3 - k[72] sustain - time to move the amplitude from decay_level to sustain_level,
-# k4 - k[73] release - time to move amplitude from sustain_level to 0
+# k1 - unassigned
+# k2 - decay - time to move amplitude from attack_level to decay_level,
+# k3 - sustain - time to move the amplitude from decay_level to sustain_level,
+# k4 - release - time to move amplitude from sustain_level to 0
 
-# k5 - k[74] unassigned
-# k6 - k[75] pitch
-# k7 - k[76] density
-# k8 - k[76] volume
+# k5 - unassigned
+# k6 - pitch
+# k7 - density
+# k8 - volume
 
 p_name=["improvise","trigger","i_play","aop+play","hit1","hit2","drone1","drone2"]
 k_name=["unassigned","decay","sustain","release","unassigned","pitch","density","volume"]
@@ -57,7 +57,7 @@ set :i_ready, 1    #I play, on or off
 set :aop_ready, 0  #aop plays, on or off
 
 
-# Values for Knobs
+# Value for Knobs
 set :adjdec, 0    #decay between 0 and 1
 set :adjsus, 0    #sustain between 0 and 1
 set :adjrel, 0.8    #release between 0+0.8 and 1+ 0.8
@@ -88,35 +88,35 @@ live_loop :con_chg do
   knb_no, val = sync "/midi*/control_change"
   val = norm(val)
   
-  if knb_no == 70 then
+  if knb_no == 1 then
     puts k_name[0], val
   end
-  if knb_no == 71 then
+  if knb_no == 2 then
     set :adjdec, val
     puts k_name[1], val
   end
-  if knb_no == 72 then
+  if knb_no == 3 then
     set :adjsus, val
     puts k_name[2], val
   end
-  if knb_no == 73 then
+  if knb_no == 4 then
     set :adjrel, (val + 0.08)
     puts k_name[3], (val + 0.08)
   end
   
   
-  if knb_no == 74 then
+  if knb_no == 5 then
     puts k_name[4], val
   end
-  if knb_no == 75 then
+  if knb_no == 6 then
     set :adjpitch, (val*50 + 50)
     puts k_name[5], (val*50 + 50)
   end
-  if knb_no == 76 then
+  if knb_no == 7 then
     set :adjdens, val
     puts k_name[6], val
   end
-  if knb_no == 77 then
+  if knb_no == 8 then
     set :adjvol, val
     puts k_name[7], val
   end
@@ -131,31 +131,21 @@ end
 
 ## Capture pad change
 live_loop :note_on do
-  
-  #Get pad push info
   use_real_time
-  pad_no, vel = sync "/midi*/note_on"
-  
+  pad_no, vel = sync "/midi*2/note_on"
   #Cue the sound for each pad
   if get(:i_ready) == 1 then
-    if pad_no == 40 then
-      puts p_name[4]
-      use_synth :mod_beep
-      play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
-    end
-    if pad_no == 41 then
-      puts p_name[5]
-      sample :elec_triangle, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
-    end
-    if pad_no == 42 then  puts p_name[6] end
-    if pad_no == 43 then  puts p_name[7] end
-  end
-  if get(:aop_ready) == 1 then
-    if pad_no == 40 then  puts p_name[4] end
-    if pad_no == 41 then  puts p_name[5] end
-    if pad_no == 42 then  puts p_name[6] end
-    if pad_no == 43 then  puts p_name[7] end
+    puts p_name[4], vel
+    use_synth :dsaw
+    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
     
   end
-  
 end
+
+live_loop :hit1 do
+  use_real_time
+  vel = sync "/midi*2/channel_pressure"
+  use_synth :dsaw
+  play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos) if vel > 0
+end
+
