@@ -10,8 +10,8 @@
 # and the AOP (right channel) to perform within an ensemble.
 
 
-p_name=["mode1","mode2","improvise1","improveise2",
-        "mode3","mode4","i_play","aop+play"] #pads
+p_name=["mode3","mode4","i_play","aop+play", #pads
+        "mode1","mode2","improvise1","improveise2"]
 
 k_name=["ctrl_d1","ctrl_d2","pitch", "density",
         "decay","sustain","release","volume"] #knobs
@@ -110,7 +110,7 @@ end
 ## Capture Button Change
 live_loop :con_chg do
   use_real_time
-  pad_no, val = sync "/midi*/note_on"
+  pad_no, val = sync "/midi*/note*"
   
   if pad_no == 5 then
     puts p_name[4]
