@@ -127,7 +127,7 @@ end
 
 ## Capture Pad Change (Channel 1)
 live_loop :pad_chg do
-  # use_real_time
+  use_real_time
   pad_no, val = sync "/midi*/note*"
   val = norm(val)
   
