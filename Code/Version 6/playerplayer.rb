@@ -63,7 +63,7 @@ set :adjsus, 0    #sustain between 0 and 1
 set :adjrel, 0.8    #release between 0+0.8 and 1+ 0.8
 
 set :adjpitch, 50  #pitch between 0*50 +50 and 1*50 + 50
-set :adjdens, 1   #denisty between 0 and 1
+set :adjdens, 0.2   #denisty between 0+0.2 and 1+ 0.2
 set :adjvol, 1    #volume between 0 and 1
 
 
@@ -113,8 +113,8 @@ live_loop :con_chg do
     puts k_name[5], (val*50 + 50)
   end
   if knb_no == 7 then
-    set :adjdens, val
-    puts k_name[6], val
+    set :adjdens, val*2 + 0.2
+    puts k_name[6], val*2 + 0.2
   end
   if knb_no == 8 then
     set :adjvol, val
@@ -129,26 +129,48 @@ end
 # Play when a pad is pressed, only if the player is ready to play.
 # ---------------------------------------------------------
 
-## Capture pad change
-live_loop :hit1 do
+## Capture pad change on different channels
+live_loop :c2_on do
   use_real_time
   pad_no, vel = sync "/midi*2/note_on"
   if get(:i_ready) == 1 then
-    puts p_name[4], vel
-    use_synth :dsaw
+    puts p_name[4]
+    use_synth :pretty_bell
+    
     play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+  end
+end
+
+live_loop :c2_cp do
+  use_real_time
+  sync "/midi*2/channel_pressure"
+  if get(:i_ready) == 1 then
+    use_synth :pretty_bell
+    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+    sleep get(:adjdens)
+  end
+end
+
+live_loop :c3_on do
+  use_real_time
+  pad_no, vel = sync "/midi*3/note_on"
+  if get(:i_ready) == 1 then
+    puts p_name[4]
+    use_synth :fm
+    
+    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+  end
+end
+
+live_loop :c3_cp do
+  use_real_time
+  sync "/midi*3/channel_pressure"
+  if get(:i_ready) == 1 then
+    use_synth :fm
+    
+    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+    sleep get(:adjdens)
     
   end
 end
 
-live_loop :hit1_s do
-  use_real_time
-  vel = sync "/midi*2/channel_pressure"
-  if vel != 0 then
-    live_loop :h do
-      use_synth :dsaw
-      play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
-      sleep 0.1
-    end
-  end
-end
