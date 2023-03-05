@@ -51,6 +51,8 @@ set :i_pos, -1 #left channel
 set :aop_pos, 1 #right channel
 
 # Values for Pads
+set :drone1, 0    #drone 1, on or off
+set :drone2, 0     # drone 2, on of off
 set :improvise, 0 #improvise, on or off
 set :trigger, 0   #trigger, on or off
 set :i_ready, 1    #I play, on or off
@@ -135,8 +137,8 @@ live_loop :c5_on do
   pad_no, vel = sync "/midi*5/note_on"
   if get(:i_ready) == 1 then
     puts p_name[4]
-    #use_synth :pretty_bell
-    #play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+    use_synth :pretty_bell
+    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
   end
 end
 
@@ -155,8 +157,8 @@ live_loop :c6_on do
   pad_no, vel = sync "/midi*6/note_on"
   if get(:i_ready) == 1 then
     puts p_name[4]
-    #use_synth :fm
-    # play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
+    use_synth :fm
+    play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:i_pos)
   end
 end
 
@@ -171,7 +173,39 @@ live_loop :c6_cp do
   end
 end
 
-#Skip channel 7 and 8 for now
+live_loop :c7_on do
+  use_real_time
+  sync "/midi*7/note_on"
+  if get(:drone1) == 1 then
+    set :drone1, 0
+  elsif get(:drone1) == 0 then
+    set :drone1, 1
+  end
+end
+
+
+live_loop :playdrones do
+  use_real_time
+  if get(:drone1) == 1
+d1 = sample :ambi_drone, amp: get(:adjvol), pan: get(:i_pos), rate: get(:adjdens)
+  end
+  if get(:drone2) == 1
+d2 = sample :ambi_haunted_hum, amp: get(:adjvol), pan: get(:i_pos), rate: get(:adjdens)
+  end
+  sleep 0.4
+end
+
+
+live_loop :c8_on do
+  use_real_time
+  sync "/midi*8/note_on" 
+  if get(:drone2) == 1 then
+    set :drone2, 0
+  elsif get(:drone2) == 0 then
+    set :drone2, 1
+  end
+end
+
 
 live_loop :c1_cp do
   use_real_time
@@ -183,25 +217,27 @@ live_loop :c1_cp do
     ranNote=[rrand_i(50, 120), rrand_i(50,120), rrand_i(50, 120)]
     ranAttack=[rrand(0, 1), rrand(0,1), rrand(0, 1)]
     ranRelease=[rrand(0, 1), rrand(0,1), rrand(0, 1)]
-    ranPan= [rrand_i(-1, 1), rrand(-1,1), rrand_i(-1, 1)]
     
     if(rrand_i(0,10) > 1)
-      synth slist[ranSyn[0]],note: ranNote[0],attack: ranAttack[0], release: ranRelease[0], pan: ranPan[0], amp: 0.01
-      synth slist[ranSyn[1]],note: ranNote[1],attack: ranAttack[1], release: ranRelease[1], pan: ranPan[1], amp: 0.01
-      synth slist[ranSyn[2]],note: ranNote[2],attack: ranAttack[2], release: ranRelease[2], pan: ranPan[2], amp: 0.01
+      synth slist[ranSyn[0]],note: ranNote[0],attack: ranAttack[0], release: ranRelease[0], pan: get(:i_pos), amp: get(:adjvol)
+      synth slist[ranSyn[1]],note: ranNote[1],attack: ranAttack[1], release: ranRelease[1], pan: get(:i_pos), amp: get(:adjvol)
+      synth slist[ranSyn[2]],note: ranNote[2],attack: ranAttack[2], release: ranRelease[2], pan: get(:i_pos), amp: get(:adjvol)
     else
-      synth :cnoise, sustain: 0.5, amp: 0.001
+      synth :cnoise, sustain: 0.5, amp: 0.001, pan: get(:i_pos)
       sleep get(:adjdens)
     end
   end
 end
 
-#Skip channel 2 for now
+live_loop :c2_on do
+  use_real_time
+  sync "/midi*2/note_on" 
+  osc_send "localhost",4560,"/stop-all-jobs"
+end
 
 live_loop :c3_on do
   use_real_time
-  pad_no, vel = sync "/midi*3/note_on"
-  
+  sync "/midi*3/note_on"
   if get(:i_ready) == 1 then
     set :i_ready, 0
   elsif get(:i_ready) == 0 then
@@ -211,11 +247,12 @@ end
 
 live_loop :c4_on do
   use_real_time
-  pad_no, vel = sync "/midi*4/note_on"
-  
+  sync "/midi*4/note_on"
   if get(:aop_ready) == 1 then
     set :aop_ready, 0
   elsif get(:aop_ready) == 0 then
     set :aop_ready, 1
   end
 end
+
+
