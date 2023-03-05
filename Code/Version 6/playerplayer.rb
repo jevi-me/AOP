@@ -61,7 +61,7 @@ set :aop_ready, 0  #aop plays, on or off
 set :adjatt, 0    #attack between 0 and 1
 set :adjdec, 0    #decay between 0 and 1
 set :adjsus, 0    #sustain between 0 and 1
-set :adjrel, 0    #release between 0 and 1
+set :adjrel, 0    #release between 0+0.8 and 1+ 0.8
 
 set :adjcut, 20    #cutoff between 0*20 +20 and 1*20 + 20
 set :adjpitch, 50  #pitch between 0*50 +50 and 1*50 + 50
@@ -104,7 +104,7 @@ live_loop :con_chg do
   end
   if knb_no == 73 then
     set :adjrel, val
-    puts k_name[3], val
+    puts k_name[3], (val + 0.08)
   end
   
   if knb_no == 74 then
@@ -143,17 +143,18 @@ live_loop :note_on do
   if get(:i_ready) == 1 then
     if pad_no == 40 then
       puts p_name[4]
+      use_synth :dsaw
       play get(:adjpitch), attack: get(:adjatt), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), cutoff: get(:adjcut), pan: get(:i_pos)
     end
-    if pad_no == 41 then cue puts p_name[5] end
-    if pad_no == 42 then cue puts p_name[6] end
-    if pad_no == 43 then cue puts p_name[7] end
+    if pad_no == 41 then  puts p_name[5] end
+    if pad_no == 42 then  puts p_name[6] end
+    if pad_no == 43 then  puts p_name[7] end
   end
   if get(:aop_ready) == 1 then
-    if pad_no == 40 then cue puts p_name[4] end
-    if pad_no == 41 then cue puts p_name[5] end
-    if pad_no == 42 then cue puts p_name[6] end
-    if pad_no == 43 then cue puts p_name[7] end
+    if pad_no == 40 then  puts p_name[4] end
+    if pad_no == 41 then  puts p_name[5] end
+    if pad_no == 42 then  puts p_name[6] end
+    if pad_no == 43 then  puts p_name[7] end
     
   end
   
