@@ -39,7 +39,7 @@
 # k7 - k[76] density
 # k8 - k[76] volume
 
-p_name=["hit1","hit2","drone1","drone2","improvise","trigger","i_play","aop+play"]
+p_name=["improvise","trigger","i_play","aop+play","hit1","hit2","drone1","drone2"]
 k_name=["attack","decay","sustain","release","cutoff","pitch","density","volume"]
 # ---------------------------------------------------------
 #### INITIALISE AND DEFINE
@@ -142,17 +142,19 @@ live_loop :note_on do
   #Cue the sound for each pad
   if get(:i_ready) == 1 then
     if pad_no == 40 then
+      puts p_name[4]
       play get(:adjpitch), attack: get(:adjatt), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), cutoff: get(:adjcut), pan: get(:i_pos)
     end
-    if pad_no == 41 then cue :pip6 end
-    if pad_no == 42 then cue :pip7 end
-    if pad_no == 43 then cue :pip8 end
+    if pad_no == 41 then cue puts p_name[5] end
+    if pad_no == 42 then cue puts p_name[6] end
+    if pad_no == 43 then cue puts p_name[7] end
   end
   if get(:aop_ready) == 1 then
-    if pad_no == 40 then cue :aopp5 end
-    if pad_no == 41 then cue :aopp6 end
-    if pad_no == 42 then cue :aopp7 end
-    if pad_no == 43 then cue :aopp8 end
+    if pad_no == 40 then cue puts p_name[4] end
+    if pad_no == 41 then cue puts p_name[5] end
+    if pad_no == 42 then cue puts p_name[6] end
+    if pad_no == 43 then cue puts p_name[7] end
+    
   end
   
 end
