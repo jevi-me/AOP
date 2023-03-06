@@ -130,21 +130,22 @@ live_loop :aop_hit1_on do
     if get(:mode1) == 1 then
       use_synth :pretty_bell
       play get(:adjpitch), pan: get(:aop_pos), amp: get(:adjvol)
-    elsif get(:mode2) == 1 then
+    end
+    if get(:mode2) == 1 then
       use_synth :dull_bell
       play get(:adjpitch), pan: get(:aop_pos), amp: get(:adjvol)
-    elsif get(:mode3) == 1 then
+    end
+    if get(:mode3) == 1 then
       use_synth :pretty_bell
       play get(:adjpitch) + 4, pan: get(:aop_pos), amp: get(:adjvol)
-    elsif get(:mode4) == 1 then
+    end
+    if get(:mode4) == 1 then
       use_synth :dull_bell
       play get(:adjpitch) + 4, pan: get(:aop_pos), amp: get(:adjvol)
       play get(:adjpitch) + 8, pan: get(:aop_pos), amp: get(:adjvol)
     else
-      use_synth :pretty_bell
-      play get(:adjpitch), pan: get(:aop_pos), amp: get(:adjvol)
-    end   
-    sleep get(:adjdens) + 0.2
+      sleep get(:adjdens) + 0.2
+    end
   end
 end
 
@@ -156,26 +157,25 @@ live_loop :aop_hit2_on do
   if get(:aop_ready) == 1 then
     if get(:mode1) == 1 then
       use_synth :fm
-    play get(:adjpitch), pan: get(:aop_pos), amp: get(:adjvol)
-    elsif get(:mode2) == 1 then
-      use_synth :fm
-          with_fx :vowel, vowel_sound: 1, voice: 1 do
-
       play get(:adjpitch), pan: get(:aop_pos), amp: get(:adjvol)
     end
-    elsif get(:mode3) == 1 then
+    if get(:mode2) == 1 then
       use_synth :fm
-      play get(:adjpitch) + 4, pan: get(:aop_pos), amp: get(:adjvol)
-    elsif get(:mode4) == 1 then
-      use_synth :fm
-          with_fx :vowel, vowel_sound: 1, voice: 1 do
-      play get(:adjpitch) + 4, pan: get(:aop_pos), amp: get(:adjvol)
-      play get(:adjpitch) + 8, pan: get(:aop_pos), amp: get(:adjvol)
+      with_fx :vowel, vowel_sound: 1, voice: 1 do
+        play get(:adjpitch), pan: get(:aop_pos), amp: get(:adjvol)
+      end
     end
-    else
-          use_synth :fm
-    play get(:adjpitch), pan: get(:aop_pos), amp: get(:adjvol)
-    end   
+    if get(:mode3) == 1 then
+      use_synth :fm
+      play get(:adjpitch) + 4, pan: get(:aop_pos), amp: get(:adjvol)
+    end
+    if get(:mode4) == 1 then
+      use_synth :fm
+      with_fx :vowel, vowel_sound: 1, voice: 1 do
+        play get(:adjpitch) + 4, pan: get(:aop_pos), amp: get(:adjvol)
+        play get(:adjpitch) + 8, pan: get(:aop_pos), amp: get(:adjvol)
+      end
+    end
     sleep get(:adjdens) + 0.2
   end
 end
