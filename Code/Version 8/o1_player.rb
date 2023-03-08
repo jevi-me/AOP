@@ -172,5 +172,26 @@ live_loop :o1_drone2_on do
     end
   end
         sleep get(:adjdens) + 0.2
+end
 
+live_loop :o1_improv_on do
+  use_real_time
+  btn_no, vel = sync "/play/improv_burst"
+  
+  slist= [:mod_beep, :growl, :dark_ambience, :growl, :fm]
+  
+  ranSyn= [rrand_i(0, slist.length-1), rrand_i(0,slist.length-1), rrand_i(0, slist.length-1)]
+  ranNote=[rrand_i(50, 120), rrand_i(50,120), rrand_i(50, 120)]
+  ranAttack=[rrand(0, 1), rrand(0,1), rrand(0, 1)]
+  ranRelease=[rrand(0, 1), rrand(0,1), rrand(0, 1)]
+  ranPan= [rrand_i(-1, 1), rrand(-1,1), rrand_i(-1, 1)]
+  
+  if(rrand_i(0,10) > 1)
+    synth slist[ranSyn[0]],note: ranNote[0],attack: ranAttack[0], release: ranRelease[0], pan: ranPan[0], amp:  get(:adjvol) 
+    synth slist[ranSyn[1]],note: ranNote[1],attack: ranAttack[1], release: ranRelease[1], pan: ranPan[1], amp:  get(:adjvol)  
+    synth slist[ranSyn[2]],note: ranNote[2],attack: ranAttack[2], release: ranRelease[2], pan: ranPan[2], amp:  get(:adjvol) 
+  else
+    synth :cnoise, sustain: 0.5, amp: get(:adjvol) 
+  end
+    sleep 0.4
 end
