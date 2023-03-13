@@ -195,7 +195,7 @@ live_loop :o2_hit1_on do
         while get(:loop_this) == 1 do
           if get(:mut1) == 1 then
             use_synth :pretty_bell
-            play get(:adjpitch), pan: get(:o2_pos), amp: get(:adjvol)
+            play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
           end
           if get(:mut2) == 1 then
             use_synth :dull_bell
@@ -210,7 +210,7 @@ live_loop :o2_hit1_on do
     else
       if get(:mut1) == 1 then
         use_synth :pretty_bell
-        play get(:adjpitch), pan: get(:o2_pos), amp: get(:adjvol)
+        play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
       end
       if get(:mut2) == 1 then
         use_synth :dull_bell
@@ -234,7 +234,7 @@ live_loop :o2_hit2_on do
         while get(:loop_this) == 1 do
           if get(:mut1) == 1 then
             use_synth :fm
-            play get(:adjpitch), pan: get(:o2_pos), amp: get(:adjvol)
+            play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
           end
           if get(:mut2) == 1 then
             use_synth :fm
@@ -251,7 +251,7 @@ live_loop :o2_hit2_on do
     else
       if get(:mut1) == 1 then
         use_synth :fm
-        play get(:adjpitch), pan: get(:o2_pos), amp: get(:adjvol)
+        play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
       end
       if get(:mut2) == 1 then
         use_synth :fm
