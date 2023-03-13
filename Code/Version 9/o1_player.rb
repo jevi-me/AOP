@@ -195,6 +195,7 @@ live_loop :o1_hit1_on do
           play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol)
           sleep get(:adjdens) + 0.2
         end
+        stop
         sleep get(:adjdens) + 0.2
       end
     else
@@ -217,6 +218,7 @@ live_loop :o1_hit2_on do
           play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol)
           sleep get(:adjdens) + 0.2
         end
+        stop
         sleep get(:adjdens) + 0.2
       end
     else
@@ -238,12 +240,12 @@ live_loop :o1_drone1_on do
           use_synth :fm
           with_fx :vowel, vowel_sound: 1, voice: 1 do
           play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos)
-          sleep get(:adjdens) + 0.2
         end
         sleep get(:adjdens) + 0.2
       end
+      sleep get(:adjdens) + 0.2
+      stop
     end
-  end
   else
     use_synth :fm
     with_fx :vowel, vowel_sound: 1, voice: 1 do
@@ -251,6 +253,7 @@ live_loop :o1_drone1_on do
     end
   end
   sleep get(:adjdens) + 0.2
+end
 end
 
 ## Drone 2
@@ -264,19 +267,20 @@ live_loop :o1_drone2_on do
           use_synth :fm
           with_fx :vowel, vowel_sound: 5, voice: 4 do
           play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos)
-          sleep get(:adjdens) + 0.2
         end
         sleep get(:adjdens) + 0.2
       end
+      sleep get(:adjdens) + 0.2
+      stop
     end
-  end
   else
     use_synth :fm
     with_fx :vowel, vowel_sound: 5, voice: 4 do
       play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos)
     end
   end
-  sleep get(:adjdens) + 0.2
+end
+sleep get(:adjdens) + 0.2
 end
 
 

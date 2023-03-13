@@ -197,6 +197,7 @@ live_loop :o3_hit1_on do
           end
           sleep get(:adjdens) + 0.2
         end
+        stop
         sleep get(:adjdens) + 0.2
       end
     else
@@ -225,6 +226,7 @@ live_loop :o3_hit2_on do
           end
           sleep get(:adjdens) + 0.2
         end
+        stop
         sleep get(:adjdens) + 0.2
       end
     else
@@ -252,6 +254,7 @@ live_loop :o3_drone1_on do
           end
           sleep get(:adjdens) + 0.2
         end
+        stop
         sleep get(:adjdens) + 0.2
       end
     else
@@ -279,6 +282,7 @@ live_loop :o3_drone2_on do
           end
           sleep get(:adjdens) + 0.2
         end
+        stop
         sleep get(:adjdens) + 0.2
       end
     else
