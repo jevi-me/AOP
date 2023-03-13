@@ -70,10 +70,10 @@ define :norm do |n| #scale 0->127 to 0->1
   return n/127
 end
 
-## Capture knob change (Channel 2)
-live_loop :knb_chg do
+## Capture knob change (Channel 9 - 16)
+live_loop :knb_chg9 do
   #  use_real_time
-  knb_no, val = sync "/midi*/control_change"
+  knb_no, val = sync "/midi*9/control_change"
   val = normf(val)
   
   if knb_no == 1 then
@@ -81,22 +81,46 @@ live_loop :knb_chg do
     #puts k_name[0], val
     osc "/enviro/1", knb_no, "ctrl_d1", val
   end
+end
+
+live_loop :knb_chg10 do
+  #  use_real_time
+  knb_no, val = sync "/midi*10/control_change"
+  val = normf(val)
   if knb_no == 2 then
     set :ctrl_d2, val
     #puts k_name[1], val
     osc "/enviro/2", knb_no, "ctrl_d2", val
   end
+end
+
+
+live_loop :knb_chg11 do
+  #  use_real_time
+  knb_no, val = sync "/midi*11/control_change"
+  val = normf(val)
   if knb_no == 3 then
     set :adjpitch, (val*50 + 50)
     #puts k_name[2], (val*50 + 50)
     osc "/enviro/3", knb_no, "adjpitch", (val*50 + 50)
   end
+end
+
+live_loop :knb_chg12 do
+  #  use_real_time
+  knb_no, val = sync "/midi*12/control_change"
+  val = normf(val)
   if knb_no == 4 then
     set :adjdens, val
     #puts k_name[3], val
     osc "/enviro/4", knb_no, "adjdens", val
   end
-  
+end
+
+live_loop :knb_chg13 do
+  #  use_real_time
+  knb_no, val = sync "/midi*13/control_change"
+  val = normf(val)
   
   if knb_no == 5 then
     set :adjdec, (val*2 + 0.2)
@@ -104,30 +128,49 @@ live_loop :knb_chg do
     osc "/enviro/5", knb_no, "adjdec", (val*2 + 0.2)
   end
   
+end
+
+live_loop :knb_chg14 do
+  #  use_real_time
+  knb_no, val = sync "/midi*14/control_change"
+  val = normf(val)
   if knb_no == 6 then
     set :adjsus, val
     #puts k_name[5], val
     osc "/enviro/6", knb_no, "adjsus", val
     
   end
+end
+
+live_loop :knb_chg15 do
+  #  use_real_time
+  knb_no, val = sync "/midi*15/control_change"
+  val = normf(val)
   
   if knb_no == 7 then
     set :adjrel, (val + 0.08)
     #puts k_name[6], (val + 0.08)
     osc "/enviro/7", knb_no, "adjrel", (val + 0.08)
   end
+  
+end
+
+live_loop :knb_chg16 do
+  #  use_real_time
+  knb_no, val = sync "/midi*16/control_change"
+  val = normf(val)
   if knb_no == 8 then
     set :adjvol, val
     #puts k_name[7], val
     osc "/enviro/8", knb_no, "adjvol", (val*0.5 +0.5)
   end
-  sleep 0.4
 end
 
-## Capture Pad Change (Channel 1)
-live_loop :pad_chg do
+
+## Capture Pad Change (Channel 1 - 6)
+live_loop :pad_chg5 do
   use_real_time
-  pad_no, val = sync "/midi*/note*"
+  pad_no, val = sync "/midi*1/note*"
   val = norm(val)
   
   if pad_no == 5 then
@@ -135,44 +178,83 @@ live_loop :pad_chg do
     set :mut1, val
     osc "/modes/5", pad_no, "mut1", val
   end
+end
+
+live_loop :pad_chg6 do
+  use_real_time
+  pad_no, val = sync "/midi*2/note*"
+  val = norm(val)
   if pad_no == 6 then
     #puts p_name[5]
     set :mut2, val
     osc "/modes/6", pad_no, ",mut2", val
   end
+end
+
+live_loop :pad_chg7 do
+  use_real_time
+  pad_no, val = sync "/midi*3/note*"
+  val = norm(val)
   if pad_no == 7 then
     #puts p_name[6], val
     set :chaos1, val
     osc "/modes/7", pad_no, "chaos1", val
   end
-  
+end
+
+live_loop :pad_chg8 do
+  use_real_time
+  pad_no, val = sync "/midi*4/note*"
+  val = norm(val)
   if pad_no == 8 then
     #puts p_name[7], val
     set :chaos2, val
     osc "/modes/8", pad_no, "chaos2", val
   end
-  
+end
+
+live_loop :pad_chg1 do
+  use_real_time
+  pad_no, val = sync "/midi*5/note*"
+  val = norm(val)
   if pad_no == 1 then
     #puts p_name[0], val
     set :loop_this, val
     osc "/modes/1", pad_no, "loop_this", val
   end
+end
+
+live_loop :pad_chg2 do
+  use_real_time
+  pad_no, val = sync "/midi*6/note*"
+  val = norm(val)
   if pad_no == 2 then
     #puts p_name[1], val
     set :o1_ready, val
     osc "/modes/2", pad_no, "o1_ready", val
   end
+end
+
+live_loop :pad_chg3 do
+  use_real_time
+  pad_no, val = sync "/midi*7/note*"
+  val = norm(val)
   if pad_no == 3 then
     #puts p_name[2], val
     set :o2_ready, val
     osc "/modes/3", pad_no, "o2_ready", val
   end
+end
+
+live_loop :pad_chg4 do
+  use_real_time
+  pad_no, val = sync "/midi*8/note*"
+  val = norm(val)
   if pad_no == 4 then
     #puts p_name[3], val
     set :o3_ready, val
     osc "/modes/4", pad_no, "o3_ready", val
   end
-  sleep 0.4
 end
 
 
