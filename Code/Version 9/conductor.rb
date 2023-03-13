@@ -72,10 +72,9 @@ end
 
 ## Capture knob change (Channel 9 - 16)
 live_loop :knb_chg9 do
-  #  use_real_time
+  use_real_time
   knb_no, val = sync "/midi*9/control_change"
   val = normf(val)
-  
   if knb_no == 1 then
     set :ctrl_d1, val
     #puts k_name[0], val
@@ -84,7 +83,7 @@ live_loop :knb_chg9 do
 end
 
 live_loop :knb_chg10 do
-  #  use_real_time
+  use_real_time
   knb_no, val = sync "/midi*10/control_change"
   val = normf(val)
   if knb_no == 2 then
@@ -94,9 +93,8 @@ live_loop :knb_chg10 do
   end
 end
 
-
 live_loop :knb_chg11 do
-  #  use_real_time
+  use_real_time
   knb_no, val = sync "/midi*11/control_change"
   val = normf(val)
   if knb_no == 3 then
@@ -107,7 +105,7 @@ live_loop :knb_chg11 do
 end
 
 live_loop :knb_chg12 do
-  #  use_real_time
+  use_real_time
   knb_no, val = sync "/midi*12/control_change"
   val = normf(val)
   if knb_no == 4 then
@@ -118,27 +116,24 @@ live_loop :knb_chg12 do
 end
 
 live_loop :knb_chg13 do
-  #  use_real_time
+  use_real_time
   knb_no, val = sync "/midi*13/control_change"
   val = normf(val)
-  
   if knb_no == 5 then
     set :adjdec, (val*2 + 0.2)
     #puts k_name[4], (val*2 + 0.2)
     osc "/enviro/5", knb_no, "adjdec", (val*2 + 0.2)
   end
-  
 end
 
 live_loop :knb_chg14 do
-  #  use_real_time
+  use_real_time
   knb_no, val = sync "/midi*14/control_change"
   val = normf(val)
   if knb_no == 6 then
     set :adjsus, val
     #puts k_name[5], val
     osc "/enviro/6", knb_no, "adjsus", val
-    
   end
 end
 
@@ -156,7 +151,7 @@ live_loop :knb_chg15 do
 end
 
 live_loop :knb_chg16 do
-  #  use_real_time
+  use_real_time
   knb_no, val = sync "/midi*16/control_change"
   val = normf(val)
   if knb_no == 8 then
@@ -172,7 +167,6 @@ live_loop :pad_chg5 do
   use_real_time
   pad_no, val = sync "/midi*1/note*"
   val = norm(val)
-  
   if pad_no == 5 then
     #puts p_name[4], val
     set :mut1, val
@@ -276,7 +270,7 @@ end
 
 
 live_loop :rud do #up/down
-  # use_real_time
+  use_real_time
   b= sync "/osc*/rud"
   if b[0] > 0
     #puts c_name[0]
@@ -290,14 +284,14 @@ end
 
 # Drones
 live_loop :bt3 do #4
-  # use_real_time
+  use_real_time
   b= sync "/osc*/b3"
   #puts c_name[3]
   osc "/play/drone1", 1
 end
 
 live_loop :bt1 do #2
-  #  use_real_time
+  use_real_time
   b= sync "/osc*/b1"
   #puts c_name[1]
   osc "/play/drone2", 1
@@ -305,7 +299,7 @@ end
 
 
 live_loop :rlr do # left/right
-  # use_real_time
+  use_real_time
   b= sync "/osc*/rlr"
   if b[0] > 0
     #puts c_name[1]
@@ -319,7 +313,7 @@ end
 
 # Improvise
 live_loop :bt9 do #Start
-  #use_real_time
+  use_real_time
   b= sync "/osc*/b9"
   #puts c_name[4]
   osc "/play/improv_burst", 1
@@ -327,7 +321,7 @@ live_loop :bt9 do #Start
 end
 
 live_loop :bt8 do #Select
-  #use_real_time
+  use_real_time
   b=sync "/osc*/b8"
   #puts c_name[4]
   osc "/play/improv_burst", 1
@@ -336,14 +330,14 @@ end
 
 # Triggers
 live_loop :bt6 do  #Left Up
-  #use_real_time
+  use_real_time
   b=sync "/osc*/b6"
   #puts c_name[5]
   osc "/play/trigger-up", 1
 end
 
 live_loop :bt4 do #Left down
-  #use_real_time
+  use_real_time
   b=sync "/osc*/b4"
   #puts c_name[6]
   osc "/play/trigger-down", 1
@@ -351,7 +345,7 @@ live_loop :bt4 do #Left down
 end
 
 live_loop :bt7 do  #Right Up
-  #use_real_time
+  use_real_time
   b=sync "/osc*/b7"
   #puts c_name[5]
   osc "/play/trigger-up", 1
@@ -359,7 +353,7 @@ live_loop :bt7 do  #Right Up
 end
 
 live_loop :bt5 do #Right Down
-  #use_real_time
+  use_real_time
   b=sync "/osc*/b5"
   #puts c_name[6]
   osc "/play/trigger-down", 1
