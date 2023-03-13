@@ -51,14 +51,14 @@ set :adjvol, 0.5    #volume between 0.5 and 1
 # ---------------------------------------------------------
 
 ## Capture environemnt - knob changes
-live_loop :o1_enviro_1 do
+live_loop :o2_enviro_1 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/1"
   if knb_no == 1 then
     set :ctrl_d1, val
   end
 end
-live_loop :o1_enviro_2 do
+live_loop :o2_enviro_2 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/2"
   if knb_no == 2 then
@@ -66,7 +66,7 @@ live_loop :o1_enviro_2 do
   end
 end
 
-live_loop :o1_enviro_3 do
+live_loop :o2_enviro_3 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/3"
   if knb_no == 3 then
@@ -74,7 +74,7 @@ live_loop :o1_enviro_3 do
   end
 end
 
-live_loop :o1_enviro_4 do
+live_loop :o2_enviro_4 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/4"
   if knb_no == 4 then
@@ -82,7 +82,7 @@ live_loop :o1_enviro_4 do
   end
 end
 
-live_loop :o1_enviro_5 do
+live_loop :o2_enviro_5 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/5"
   if knb_no == 5 then
@@ -90,7 +90,7 @@ live_loop :o1_enviro_5 do
   end
 end
 
-live_loop :o1_enviro_6 do
+live_loop :o2_enviro_6 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/6"
   if knb_no == 6 then
@@ -98,7 +98,7 @@ live_loop :o1_enviro_6 do
   end
 end
 
-live_loop :o1_enviro_7 do
+live_loop :o2_enviro_7 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/7"
   if knb_no == 7 then
@@ -106,7 +106,7 @@ live_loop :o1_enviro_7 do
   end
 end
 
-live_loop :o1_enviro_8 do
+live_loop :o2_enviro_8 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/8"
   if knb_no == 8 then
@@ -116,7 +116,7 @@ end
 
 
 ## Capture modes - pad changes
-live_loop :o1_modes_5 do
+live_loop :o2_modes_5 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/5"
   if pad_no == 5 then
@@ -124,14 +124,14 @@ live_loop :o1_modes_5 do
   end
 end
 
-live_loop :o1_modes_6 do
+live_loop :o2_modes_6 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/6"
   if pad_no == 6 then
     set :mut2, val
   end
 end
-live_loop :o1_modes_7 do
+live_loop :o2_modes_7 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/7"
   if pad_no == 7 then
@@ -139,7 +139,7 @@ live_loop :o1_modes_7 do
   end
 end
 
-live_loop :o1_modes_8 do
+live_loop :o2_modes_8 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/8"
   if pad_no == 8 then
@@ -147,7 +147,7 @@ live_loop :o1_modes_8 do
   end
 end
 
-live_loop :o1_modes_1 do
+live_loop :o2_modes_1 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/1"
   if pad_no == 1 then
@@ -155,7 +155,7 @@ live_loop :o1_modes_1 do
   end
 end
 
-live_loop :o1_modes_2 do
+live_loop :o2_modes_2 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/2"
   if pad_no == 2 then
@@ -163,7 +163,7 @@ live_loop :o1_modes_2 do
   end
 end
 
-live_loop :o1_modes_3 do
+live_loop :o2_modes_3 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/3"
   if pad_no == 3 then
@@ -171,7 +171,7 @@ live_loop :o1_modes_3 do
   end
 end
 
-live_loop :o1_modes_4 do
+live_loop :o2_modes_4 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/4"
   if pad_no == 4 then
