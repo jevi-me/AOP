@@ -35,6 +35,7 @@ set :o1_ready, 0    #o1 play, on or off
 set :o2_ready, 0    #o2 plays, on or off
 set :o3_ready, 0    #o3 plays, on or off
 
+set :o1_on, 1 
 
 # Value for Knobs
 
@@ -131,6 +132,11 @@ live_loop :o1_modes_6 do
   pad_no, pad_name, val = sync "/osc*/modes/6"
   if pad_no == 6 then
     set :chaos0, val
+    if val == 0 then
+      set :o1_on, 1
+    else
+      set :o1_on, 0
+    end
   end
 end
 live_loop :o1_modes_7 do
@@ -195,7 +201,7 @@ live_loop :o1_hit1_on do
       live_loop :o1_hit1_loop_on do
         while get(:loop_this) == 1 do
           use_synth :pretty_bell
-          play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol)
+          play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol), on: get(:o1_on)
           sleep get(:adjdens) + 0.2
         end
         stop
@@ -203,7 +209,7 @@ live_loop :o1_hit1_on do
       end
     else
       use_synth :pretty_bell
-      play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol)
+      play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol), on: get(:o1_on)
     end
   end
   sleep get(:adjdens) + 0.2
@@ -218,7 +224,7 @@ live_loop :o1_hit2_on do
       live_loop :o1_hit2_loop_on do
         while get(:loop_this) == 1 do
           use_synth :fm
-          play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol)
+          play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol), on: get(:o1_on)
           sleep get(:adjdens) + 0.2
         end
         stop
@@ -226,7 +232,7 @@ live_loop :o1_hit2_on do
       end
     else
       use_synth :fm
-      play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol)
+      play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol), on: get(:o1_on)
     end
   end
   sleep get(:adjdens) + 0.2
@@ -242,7 +248,7 @@ live_loop :o1_drone1_on do
         while get(:loop_this) == 1 do
           use_synth :fm
           with_fx :vowel, vowel_sound: 1, voice: 1 do
-          play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos)
+          play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos), on: get(:o1_on)
         end
         sleep get(:adjdens) + 0.2
       end
@@ -252,7 +258,7 @@ live_loop :o1_drone1_on do
   else
     use_synth :fm
     with_fx :vowel, vowel_sound: 1, voice: 1 do
-      play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos)
+      play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos), on: get(:o1_on)
     end
   end
   sleep get(:adjdens) + 0.2
@@ -269,7 +275,7 @@ live_loop :o1_drone2_on do
         while get(:loop_this) == 1 do
           use_synth :fm
           with_fx :vowel, vowel_sound: 5, voice: 4 do
-          play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos)
+          play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos), on: get(:o1_on)
         end
         sleep get(:adjdens) + 0.2
       end
@@ -279,7 +285,7 @@ live_loop :o1_drone2_on do
   else
     use_synth :fm
     with_fx :vowel, vowel_sound: 5, voice: 4 do
-      play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos)
+      play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos), on: get(:o1_on)
     end
   end
 end
@@ -346,17 +352,6 @@ live_loop :trigger_r_down_on do
   sleep get(:adjdens) + 0.2
 end
 
-
-
-## Chaos0 Loop
-live_loop :chaos0_loop do
-  use_real_time
-  pad_no, pad_name, val = sync "/osc*/modes/6"
- 
-  if get(:chaos0) == 1 then
-    #kill left channel
-  end
-end
 
 ## Chaos1 Loop
 live_loop :chaos1_loop do
