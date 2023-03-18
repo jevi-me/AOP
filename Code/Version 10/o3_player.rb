@@ -32,6 +32,7 @@ cmal2_fin = 0.375 #3/8
 throb_fin = 0.75 #3/4
 turbine_fin = 0.6 #3/5
 
+# Finish = 1/(duration of sample) * 1  | 1 = length of a "hit"
 ffield_fin_1 =  0.01 #1/64
 cmal2_fin_1 = 0.125 #1/8
 throb_fin_1 = 0.25 #1/4

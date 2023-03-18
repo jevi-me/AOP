@@ -40,8 +40,8 @@ set :o3_ready, 0    #o3 plays, on or off
 
 # Value for Knobs
 
-set :ctrl_d1, 80    #between 80 and 100
-set :ctrl_d2, 0.5   #between 0.5 and 1
+set :ctrl_d1, 0     #between 80 and 100
+set :ctrl_d2, 0     #between 0.5 and 1
 set :adjpitch, 50   #pitch between 0*50 +50 and 1*50 + 50
 set :adjdens, 0.2   #denisty between 0+0.2 and 1+ 0.2
 
@@ -59,14 +59,14 @@ live_loop :o2_enviro_1 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/1"
   if knb_no == 1 then
-    set :ctrl_d1, (val*20 + 80)
+    set :ctrl_d1, val
   end
 end
 live_loop :o2_enviro_2 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/2"
   if knb_no == 2 then
-    set :ctrl_d2, (val*0.5 + 0.5)
+    set :ctrl_d2, val
   end
 end
 

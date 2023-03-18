@@ -10,7 +10,7 @@
 # and the AOP (right channel) to perform within an ensemble.
 
 
-live = 0
+live = 1
 
 setup_test = 0
 live_test = 0
