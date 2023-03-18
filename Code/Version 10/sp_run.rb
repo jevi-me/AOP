@@ -70,8 +70,7 @@ define :test_o2_m1 do
   osc "/play/drone1", 1
   sleep 1
   osc "/play/drone2", 1
-  sleep 1
-  osc "/play/improv_burst", 1
+
   
   sleep 2
   
@@ -109,8 +108,7 @@ define :test_o2_m2 do
   osc "/play/drone1", 1
   sleep 1
   osc "/play/drone2", 1
-  sleep 1
-  osc "/play/improv_burst", 1
+
   
   sleep 2
   
@@ -148,8 +146,7 @@ define :test_o3 do
   osc "/play/drone1", 1
   sleep 1
   osc "/play/drone2", 1
-  sleep 1
-  osc "/play/improv_burst", 1
+
   
   sleep 2
   
