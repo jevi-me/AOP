@@ -10,8 +10,8 @@
 # and the AOP (right channel) to perform within an ensemble.
 
 # Pitch: Higher than creature1 by 10 semitones
-# Sound: Mutation 1 – Chord Creature
-# Sound: Mutation 2 – Noisy Sounding Creature
+# Sound: Mutation 0 – Chord Creature
+# Sound: Mutation 1 – Noisy Sounding Creature
 # ctrl1: controls cut-off (35-130)
 # ctrl2: controls res (0-1)
 
@@ -31,7 +31,7 @@ set :o2_pos, -1 #left channel
 
 # Values for Pads (Toggle Mode, Note Play)
 set :mut1, 0     #on or off
-set :mut2, 0     #on of off
+set :chaos0, 0   #on of off
 set :chaos1, 0   #on or off
 set :chaos2, 0   #on or off
 
@@ -135,7 +135,7 @@ live_loop :o2_modes_6 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/6"
   if pad_no == 6 then
-    set :mut2, val
+    set :chaos0, val
   end
 end
 live_loop :o2_modes_7 do
@@ -200,7 +200,7 @@ live_loop :o2_hit1_on do
     if get(:loop_this) == 1 then
       live_loop :o2_hit1_loop_on do
         while get(:loop_this) == 1 do
-          if get(:mut1) == 1 then
+          if get(:mut1) == 0 then
             use_synth :growl
             play get(:adjpitch) +4, pan: get(:o2_pos), amp: get(:adjvol)
             use_synth :dark_ambience
@@ -208,7 +208,7 @@ live_loop :o2_hit1_on do
               play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
             end
           end
-          if get(:mut2) == 1 then
+          if get(:mut1) == 1 then
             use_synth :cnoise
             play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
           end
@@ -218,7 +218,7 @@ live_loop :o2_hit1_on do
         sleep get(:adjdens) + 0.2
       end
     else
-      if get(:mut1) == 1 then
+      if get(:mut1) == 0 then
         use_synth :dsaw
         play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
         use_synth :dark_ambience
@@ -226,7 +226,7 @@ live_loop :o2_hit1_on do
           play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
         end
       end
-      if get(:mut2) == 1 then
+      if get(:mut1) == 1 then
         use_synth :cnoise
         play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
       end
@@ -245,13 +245,13 @@ live_loop :o2_hit2_on do
     if get(:loop_this) == 1 then
       live_loop :o2_hit2_loop_on do
         while get(:loop_this) == 1 do
-          if get(:mut1) == 1 then
+          if get(:mut1) == 0 then
             use_synth :piano
             play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
             use_synth :growl
             play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
           end
-          if get(:mut2) == 1 then
+          if get(:mut1) == 1 then
             use_synth :pnoise
             play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
           end
@@ -261,13 +261,13 @@ live_loop :o2_hit2_on do
         sleep get(:adjdens) + 0.2
       end
     else
-      if get(:mut1) == 1 then
+      if get(:mut1) == 0 then
         use_synth :piano
         play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
         use_synth :growl
         play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
       end
-      if get(:mut2) == 1 then
+      if get(:mut1) == 1 then
         use_synth :pnoise
         play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
       end

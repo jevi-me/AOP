@@ -61,7 +61,7 @@ end
 define :test_o2_m1 do
   set :o1_ready, 1
   set :o2_ready, 1    
-  set :mut1, 1    
+  set :mut1, 0   
   
   osc "/play/hit1", 1
   sleep 1
@@ -71,7 +71,6 @@ define :test_o2_m1 do
   sleep 1
   osc "/play/drone2", 1
 
-  
   sleep 2
   
   set :loop_this, 1   
@@ -99,7 +98,7 @@ end
 define :test_o2_m2 do
   set :o1_ready, 1
   set :o2_ready, 1    
-  set :mut2, 1    
+  set :mut1, 1    
   
   osc "/play/hit1", 1
   sleep 1
@@ -108,7 +107,6 @@ define :test_o2_m2 do
   osc "/play/drone1", 1
   sleep 1
   osc "/play/drone2", 1
-
   
   sleep 2
   
@@ -146,7 +144,6 @@ define :test_o3 do
   osc "/play/drone1", 1
   sleep 1
   osc "/play/drone2", 1
-
   
   sleep 2
   

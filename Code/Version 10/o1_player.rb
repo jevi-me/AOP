@@ -26,7 +26,7 @@ set :o1_pos, -1 #left channel
 
 # Values for Pads (Toggle Mode, Note Play)
 set :mut1, 0     #on or off
-set :mut2, 0     #on of off
+set :chaos0, 0   #on of off
 set :chaos1, 0   #on or off
 set :chaos2, 0   #on or off
 
@@ -130,7 +130,7 @@ live_loop :o1_modes_6 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/6"
   if pad_no == 6 then
-    set :mut2, val
+    set :chaos0, val
   end
 end
 live_loop :o1_modes_7 do

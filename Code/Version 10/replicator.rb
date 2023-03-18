@@ -32,10 +32,10 @@ c_name=["hit1","drone2", "hit2", "drone1",
 
 # Values for Pads (Toggle Mode, Note Play)
 p_name=["loop_this","o1_ready","o2_ready","o3_ready", #pads
-        "mut1","mut2","chaos1","chaos2"]
+        "mut1","chaos0","chaos1","chaos2"]
 
 set :mut1, 0     #on or off
-set :mut2, 0     #on of off
+set :chaos0, 0     #on of off
 set :chaos1, 0   #on or off
 set :chaos2, 0   #on or off
 
@@ -180,8 +180,8 @@ live_loop :pad_chg6 do
   val = norm(val)
   if pad_no == 6 then
     #puts p_name[5]
-    set :mut2, val
-    osc "/modes/6", pad_no, ",mut2", val
+    set :chaos0, val
+    osc "/modes/6", pad_no, ",chaos0", val
   end
 end
 
