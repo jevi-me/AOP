@@ -11,10 +11,7 @@
 
 # Pitch: Higher than creature1 by 10 semitones
 # Sound: Mutation 0 – Chord Creature
-# Sound: Mutation 1 – Noisy Sounding Creature
-# ctrl1: controls cut-off (35-130)
-# ctrl2: controls res (0-1)
-
+# Sound: Mutation 1 – Pitched Up on hits only
 
 use_debug false
 use_cue_logging false
@@ -43,8 +40,8 @@ set :o3_ready, 0    #o3 plays, on or off
 
 # Value for Knobs
 
-set :ctrl_d1, 0     #control drone 1 rate  between 0 and 1
-set :ctrl_d2, 0     #control drone 2 rate  between 0 and 1
+set :ctrl_d1, 80    #between 80 and 100
+set :ctrl_d2, 0.5   #between 0.5 and 1
 set :adjpitch, 50   #pitch between 0*50 +50 and 1*50 + 50
 set :adjdens, 0.2   #denisty between 0+0.2 and 1+ 0.2
 
@@ -62,14 +59,14 @@ live_loop :o2_enviro_1 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/1"
   if knb_no == 1 then
-    set :ctrl_d1, val
+    set :ctrl_d1, (val*20 + 80)
   end
 end
 live_loop :o2_enviro_2 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/2"
   if knb_no == 2 then
-    set :ctrl_d2, val 
+    set :ctrl_d2, (val*0.5 + 0.5)
   end
 end
 
@@ -209,26 +206,34 @@ live_loop :o2_hit1_on do
             end
           end
           if get(:mut1) == 1 then
-            use_synth :cnoise
-            play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
+            use_synth :growl
+            play get(:adjpitch) +8, pan: get(:o2_pos), amp: get(:adjvol)
+            use_synth :dark_ambience
+            with_fx :vowel, vowel_sound: 5, voice: 4 do
+              play get(:adjpitch) + 12, pan: get(:o2_pos), amp: get(:adjvol)
+            end
           end
           sleep get(:adjdens) + 0.2
         end
         stop
-        sleep get(:adjdens) + 0.2
+        sleep get(:adjdens) + 0.2   
       end
     else
       if get(:mut1) == 0 then
-        use_synth :dsaw
-        play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
+        use_synth :growl
+        play get(:adjpitch) +4, pan: get(:o2_pos), amp: get(:adjvol)
         use_synth :dark_ambience
         with_fx :vowel, vowel_sound: 5, voice: 4 do
           play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
         end
       end
       if get(:mut1) == 1 then
-        use_synth :cnoise
-        play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
+        use_synth :growl
+        play get(:adjpitch) +8, pan: get(:o2_pos), amp: get(:adjvol)
+        use_synth :dark_ambience
+        with_fx :vowel, vowel_sound: 5, voice: 4 do
+          play get(:adjpitch) + 12, pan: get(:o2_pos), amp: get(:adjvol)
+        end
       end
     end
   end
@@ -252,8 +257,10 @@ live_loop :o2_hit2_on do
             play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
           end
           if get(:mut1) == 1 then
-            use_synth :pnoise
-            play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
+            use_synth :piano
+            play get(:adjpitch) + 8, pan: get(:o2_pos), amp: get(:adjvol)
+            use_synth :growl
+            play get(:adjpitch) + 12, pan: get(:o2_pos), amp: get(:adjvol)
           end
           sleep get(:adjdens) + 0.2
         end
@@ -268,8 +275,10 @@ live_loop :o2_hit2_on do
         play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
       end
       if get(:mut1) == 1 then
-        use_synth :pnoise
-        play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
+        use_synth :piano
+        play get(:adjpitch) + 8, pan: get(:o2_pos), amp: get(:adjvol)
+        use_synth :growl
+        play get(:adjpitch) + 12, pan: get(:o2_pos), amp: get(:adjvol)
       end
     end
   end
@@ -285,21 +294,24 @@ live_loop :o2_drone1_on do
     if get(:loop_this) == 1 then
       live_loop :o2_drone1_loop_on do
         while get(:loop_this) == 1 do
-          use_synth :dsaw
-          play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
+          use_synth :prophet
+          with_fx :vowel, vowel_sound: 5, voice: 4 do
+          play get(:adjpitch), sustain: get(:adjdens), pan: get(:o2_pos), amp: get(:adjvol)*0.75
+          end
           sleep get(:adjdens) + 0.2
         end
         stop
         sleep get(:adjdens) + 0.2
       end
     else
-      use_synth :dsaw
-      play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
+      use_synth :prophet
+      with_fx :vowel, vowel_sound: 5, voice: 4 do
+      play get(:adjpitch), sustain: get(:adjdens), pan: get(:o2_pos), amp: get(:adjvol)*0.75
+      end
     end
   end
   sleep get(:adjdens) + 0.2
 end
-
 
 ## Drone 2
 live_loop :o2_drone2_on do
@@ -310,16 +322,16 @@ live_loop :o2_drone2_on do
     if get(:loop_this) == 1 then
       live_loop :o2_drone2_loop_on do
         while get(:loop_this) == 1 do
-          use_synth :gnoise
-          play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
+          use_synth :prophet
+          play get(:adjpitch)+4, sustain: get(:adjdens), pan: get(:o2_pos), amp: get(:adjvol)*0.75
           sleep get(:adjdens) + 0.2
         end
         stop
         sleep get(:adjdens) + 0.2
       end
     else
-      use_synth :gnoise
-      play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
+      use_synth :prophet
+      play get(:adjpitch)+4, sustain: get(:adjdens), pan: get(:o2_pos), amp: get(:adjvol)*0.75
     end
   end
   sleep get(:adjdens) + 0.2

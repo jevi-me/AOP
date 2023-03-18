@@ -23,7 +23,7 @@ define :rfiles do
 end
 
 define :test_o1 do
-  set :o1_ready, 1    
+  set :o1_ready, 1
   osc "/play/hit1", 1
   sleep 1
   osc "/play/hit2", 1
@@ -36,32 +36,36 @@ define :test_o1 do
   
   sleep 2
   
-  set :loop_this, 1   
+  set :loop_this, 1
   osc "/play/hit1", 1
   sleep 3
-  set :loop_this, 0   
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1   
+
+  set :loop_this, 1
   osc "/play/hit2", 1
   sleep 3
-  set :loop_this, 0   
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1   
+
+  set :loop_this, 1
   osc "/play/drone1", 1
   sleep 3
-  set :loop_this, 0   
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1  
+
+  set :loop_this, 1
   osc "/play/drone2", 1
   sleep 3
-  set :loop_this, 0  
+  set :loop_this, 0
   sleep 3
+
 end
 
 define :test_o2_m1 do
   set :o1_ready, 1
-  set :o2_ready, 1    
-  set :mut1, 0   
+  set :o2_ready, 1
+  set :mut1, 0
   
   osc "/play/hit1", 1
   sleep 1
@@ -70,35 +74,38 @@ define :test_o2_m1 do
   osc "/play/drone1", 1
   sleep 1
   osc "/play/drone2", 1
-
+  
   sleep 2
   
-  set :loop_this, 1   
+  set :loop_this, 1
   osc "/play/hit1", 1
   sleep 3
-  set :loop_this, 0  
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1  
+
+  set :loop_this, 1
   osc "/play/hit2", 1
   sleep 3
-  set :loop_this, 0   
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1   
+
+  set :loop_this, 1
   osc "/play/drone1", 1
   sleep 3
-  set :loop_this, 0  
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1  
+
+  set :loop_this, 1
   osc "/play/drone2", 1
   sleep 3
-  set :loop_this, 0  
+  set :loop_this, 0
   sleep 3
 end
 
 define :test_o2_m2 do
   set :o1_ready, 1
-  set :o2_ready, 1    
-  set :mut1, 1    
+  set :o2_ready, 1
+  set :mut1, 1
   
   osc "/play/hit1", 1
   sleep 1
@@ -110,62 +117,68 @@ define :test_o2_m2 do
   
   sleep 2
   
-  set :loop_this, 1  
+  set :loop_this, 1
   osc "/play/hit1", 1
   sleep 3
-  set :loop_this, 0   
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1  
+
+  set :loop_this, 1
   osc "/play/hit2", 1
   sleep 3
-  set :loop_this, 0  
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1  
+
+  set :loop_this, 1
   osc "/play/drone1", 1
   sleep 3
-  set :loop_this, 0  
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1  
+
+  set :loop_this, 1
   osc "/play/drone2", 1
   sleep 3
-  set :loop_this, 0  
+  set :loop_this, 0
   sleep 3
 end
 
 define :test_o3 do
   set :o1_ready, 1
   set :o2_ready, 1
-  set :o3_ready, 1   
+  set :o3_ready, 1
   
   osc "/play/hit1", 1
-  sleep 1
+  sleep 4
   osc "/play/hit2", 1
-  sleep 1
+  sleep 4
   osc "/play/drone1", 1
-  sleep 1
+  sleep 4
   osc "/play/drone2", 1
   
-  sleep 2
+  sleep 4
   
-  set :loop_this, 1   
+  set :loop_this, 1
   osc "/play/hit1", 1
   sleep 3
-  set :loop_this, 0   
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1   
+
+  set :loop_this, 1
   osc "/play/hit2", 1
   sleep 3
-  set :loop_this, 0 
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1  
+
+  set :loop_this, 1
   osc "/play/drone1", 1
   sleep 3
-  set :loop_this, 0  
+  set :loop_this, 0
   sleep 3
-  set :loop_this, 1   
+
+  set :loop_this, 1
   osc "/play/drone2", 1
   sleep 3
-  set :loop_this, 0   
+  set :loop_this, 0
   sleep 3
 end
 
@@ -186,16 +199,22 @@ if live == 1 then
 end
 
 
-# Run Live Test
+# Run Live Test - Use right earbud to get isolated sound
 if live_test == 1 then
   rfiles
   sleep 4
   
   use_osc "localhost", 4560
-  
+
+  set :o1_pos, 1
   test_o1
-  #test_o2_m1
-  #test_o2_m2
-  #test_o3
+  set :o1_pos, -1 #send sound to left channel after testing
+
+  set :o2_pos, 1
+  test_o2_m1
+  test_o2_m2
+  set :o2_pos, -1 #send sound to left channel after testing
+
+  test_o3
   
 end

@@ -10,7 +10,11 @@
 # and the AOP (right channel) to perform within an ensemble.
 
 # Pitch: Same as creature1
-# Sound: Sci-Fi Creature
+# Sound: Noisy Creature
+
+# ctrl1: controls cut-off (50-90)
+# ctrl2: controls res (0.5-1)
+
 # ctrl1: location in sample?
 # ctrl2: controls res (0-1)
 
@@ -29,6 +33,16 @@ cmal2 =  "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Mountain_Audio_-_Compu
 throb = "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Rhythmic_Electrical_Throbbing.wav"
 turbine = "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Sci-Fi_Large_Turbine_Loop_3.wav"
 
+# Finish = 1/(duration of sample) * 3  | 3 = length of a "breath"
+ffield_fin =  0.05 #3/64
+cmal2_fin = 0.375 #3/8
+throb_fin = 0.75 #3/4
+turbine_fin = 0.6 #3/5
+
+ffield_fin_1 =  0.01 #1/64
+cmal2_fin_1 = 0.125 #1/8
+throb_fin_1 = 0.25 #1/4
+turbine_fin_1 = 0.2 #1/5
 
 # Pan Position in sound environment
 set :o3_pos, 1 #right channel
@@ -204,14 +218,14 @@ live_loop :o3_hit1_on do
     if get(:loop_this) == 1 then
       live_loop :o3_hit1_loop_on do
         while get(:loop_this) == 1 do
-          sample throb, amp: get(:adjvol), pan: get(:o3_pos), finish: 0.375
-          sleep 3 + get(:adjdens)
+          sample throb, amp: get(:adjvol), pan: get(:o3_pos), finish: throb_fin_1
+          sleep 0.2 + get(:adjdens)
         end
         stop
         sleep get(:adjdens) + 0.2
       end
     else
-      sample throb, amp: get(:adjvol), pan: get(:o3_pos), finish: 0.375
+      sample throb, amp: get(:adjvol), pan: get(:o3_pos), finish: throb_fin_1
     end
   end
   sleep get(:adjdens) + 0.2
@@ -226,14 +240,14 @@ live_loop :o3_hit2_on do
     if get(:loop_this) == 1 then
       live_loop :o3_hit1_loop_on do
         while get(:loop_this) == 1 do
-          sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: 0.375
-          sleep 3 + get(:adjdens)
+          sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: turbine_fin_1
+          sleep 0.2 + get(:adjdens)
         end
         stop
         sleep get(:adjdens) + 0.2
       end
     else
-      sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: 0.375
+      sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: turbine_fin_1
     end
   end
   sleep get(:adjdens) + 0.2
@@ -247,14 +261,14 @@ live_loop :o3_drone1_on do
     if get(:loop_this) == 1 then
       live_loop :o3_drone1_loop_on do
         while get(:loop_this) == 1 do
-          sample ffield, amp: get(:adjvol), pan: get(:o3_pos), finish: 0.375
-          sleep 3 + get(:adjdens)
+          sample ffield, amp: get(:adjvol), pan: get(:o3_pos), finish: ffield_fin
+          sleep 1 + get(:adjdens)
         end
         stop
         sleep get(:adjdens) + 0.2
       end
     else
-      sample ffield, amp: get(:adjvol), pan: get(:o3_pos), finish: 0.375
+      sample ffield, amp: get(:adjvol), pan: get(:o3_pos), finish: ffield_fin
     end
   end
   sleep get(:adjdens) + 0.2
@@ -269,14 +283,14 @@ live_loop :o3_drone2_on do
     if get(:loop_this) == 1 then
       live_loop :o3_drone2_loop_on do
         while get(:loop_this) == 1 do
-          sample cmal2, amp: get(:adjvol), pan: get(:o3_pos), finish: 0.375
+          sample cmal2, amp: get(:adjvol), pan: get(:o3_pos), finish: cmal2_fin
           sleep 3 + get(:adjdens)
         end
         stop
         sleep get(:adjdens) + 0.2
       end
     else
-      sample cmal2, amp: get(:adjvol), pan: get(:o3_pos), finish: 0.375
+      sample cmal2, amp: get(:adjvol), pan: get(:o3_pos), finish: cmal2_fin
     end
   end
   sleep get(:adjdens) + 0.2
