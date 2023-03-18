@@ -9,14 +9,7 @@
 # as part of an instrument that allows both me (left channel)
 # and the AOP (right channel) to perform within an ensemble.
 
-# Pitch: Same as creature1
 # Sound: Noisy Creature
-
-# ctrl1: controls cut-off (50-90)
-# ctrl2: controls res (0.5-1)
-
-# ctrl1: location in sample?
-# ctrl2: controls res (0-1)
 
 use_debug false
 use_cue_logging false

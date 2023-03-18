@@ -13,7 +13,7 @@
 live = 0
 
 setup_test = 0
-live_test = 1
+live_test = 0
 
 define :rfiles do
   run_file "/Users/jevi/GitHub/EOA/Code/Version 10/replicator.rb"
@@ -35,6 +35,16 @@ define :test_o1 do
   osc "/play/improv_burst", 1
   
   sleep 2
+
+  osc "play/trigger-l-up", 1
+  sleep 3
+  osc "play/trigger-l-down", 1
+  sleep 3  
+  osc "play/trigger-r-up", 1
+  sleep 3
+  osc "play/trigger-r-down", 1
+  
+  sleep 3
   
   set :loop_this, 1
   osc "/play/hit1", 1
@@ -199,18 +209,18 @@ if live == 1 then
 end
 
 
-# Run Live Test - Use right earbud to get isolated sound
+# Run Live Test - Use right channel to get isolated sound
 if live_test == 1 then
   rfiles
   sleep 4
   
   use_osc "localhost", 4560
 
-  set :o1_pos, 1
+  set :o1_pos, 1  #testing in right channel
   test_o1
   set :o1_pos, -1 #send sound to left channel after testing
 
-  set :o2_pos, 1
+  set :o2_pos, 1  #testing in right channel
   test_o2_m1
   test_o2_m2
   set :o2_pos, -1 #send sound to left channel after testing

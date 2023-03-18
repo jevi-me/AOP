@@ -309,3 +309,34 @@ live_loop :o1_improv_on do
   end
   sleep get(:adjdens) + 0.2
 end
+
+
+## Trigger Up – Choir
+live_loop :trigger_l_up_on do
+  use_real_time
+  btn_no, vel = sync "/osc*/play/trigger-l-up" 
+  sample :ambi_choir  
+end
+
+
+## Trigger Down – Long Braxton Hit
+live_loop :trigger_l_down_on do
+  use_real_time
+  btn_no, vel = sync "/osc*/play/trigger-l-down"  
+  sample :ambi_lunar_land, amp: get(:adjvol)
+end
+
+## Trigger Up – Guitar
+live_loop :trigger_r_up_on do
+  use_real_time
+  btn_no, vel = sync "/osc*/play/trigger-l-up" 
+  sample :guit_e_slide 
+end
+
+## Trigger Down – Glitch
+live_loop :trigger_r_down_on do
+  use_real_time
+  btn_no, vel = sync "/osc*/play/trigger-l-down"  
+  sample :glitch_robot1, amp: get(:adjvol)
+end
+

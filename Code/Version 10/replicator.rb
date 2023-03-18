@@ -333,14 +333,14 @@ live_loop :bt6 do  #Left Up
   use_real_time
   b=sync "/osc*/b6"
   #puts c_name[5]
-  osc "/play/trigger-up", 1
+  osc "/play/trigger-l-up", 1
 end
 
 live_loop :bt4 do #Left down
   use_real_time
   b=sync "/osc*/b4"
   #puts c_name[6]
-  osc "/play/trigger-down", 1
+  osc "/play/trigger-l-down", 1
   
 end
 
@@ -348,7 +348,7 @@ live_loop :bt7 do  #Right Up
   use_real_time
   b=sync "/osc*/b7"
   #puts c_name[5]
-  osc "/play/trigger-up", 1
+  osc "/play/trigger-r-up", 1
   
 end
 
@@ -356,5 +356,5 @@ live_loop :bt5 do #Right Down
   use_real_time
   b=sync "/osc*/b5"
   #puts c_name[6]
-  osc "/play/trigger-down", 1
+  osc "/play/trigger-r-down", 1
 end
