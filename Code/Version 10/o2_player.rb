@@ -62,14 +62,14 @@ live_loop :o2_enviro_1 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/1"
   if knb_no == 1 then
-    set :ctrl_d1, (val*100)+35 # cutoff 35 - 130
+    set :ctrl_d1, val
   end
 end
 live_loop :o2_enviro_2 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/2"
   if knb_no == 2 then
-    set :ctrl_d2, val # res 0 - 1
+    set :ctrl_d2, val 
   end
 end
 
@@ -210,7 +210,7 @@ live_loop :o2_hit1_on do
           end
           if get(:mut2) == 1 then
             use_synth :cnoise
-            play get(:adjpitch), sustain: get(:adjdens)*2, cutoff: get(:ctrl_d1),res: get(:ctrl_d2), pan: get(:o2_pos), amp: get(:adjvol)
+            play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
           end
           sleep get(:adjdens) + 0.2
         end
@@ -228,7 +228,7 @@ live_loop :o2_hit1_on do
       end
       if get(:mut2) == 1 then
         use_synth :cnoise
-        play get(:adjpitch), sustain: get(:adjdens)*2, cutoff: get(:ctrl_d1),res: get(:ctrl_d2), pan: get(:o2_pos), amp: get(:adjvol)
+        play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
       end
     end
   end
@@ -269,7 +269,7 @@ live_loop :o2_hit2_on do
       end
       if get(:mut2) == 1 then
         use_synth :pnoise
-        play get(:adjpitch), sustain: get(:adjdens)*2, cutoff: get(:ctrl_d1),res: get(:ctrl_d2), pan: get(:o2_pos), amp: get(:adjvol)
+        play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
       end
     end
   end
@@ -286,7 +286,7 @@ live_loop :o2_drone1_on do
       live_loop :o2_drone1_loop_on do
         while get(:loop_this) == 1 do
           use_synth :dsaw
-          play get(:adjpitch), sustain: get(:adjdens)*2, cutoff: get(:ctrl_d1), res: get(:ctrl_d2), pan: get(:o2_pos), amp: get(:adjvol)
+          play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
           sleep get(:adjdens) + 0.2
         end
         stop
@@ -294,7 +294,7 @@ live_loop :o2_drone1_on do
       end
     else
       use_synth :dsaw
-      play get(:adjpitch), sustain: get(:adjdens)*2, cutoff: get(:ctrl_d1), res: get(:ctrl_d2), pan: get(:o2_pos), amp: get(:adjvol)
+      play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
     end
   end
   sleep get(:adjdens) + 0.2
@@ -311,7 +311,7 @@ live_loop :o2_drone2_on do
       live_loop :o2_drone2_loop_on do
         while get(:loop_this) == 1 do
           use_synth :gnoise
-          play get(:adjpitch), sustain: get(:adjdens)*2, cutoff: get(:ctrl_d1),res: get(:ctrl_d2), pan: get(:o2_pos), amp: get(:adjvol)
+          play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
           sleep get(:adjdens) + 0.2
         end
         stop
@@ -319,7 +319,7 @@ live_loop :o2_drone2_on do
       end
     else
       use_synth :gnoise
-      play get(:adjpitch), sustain: get(:adjdens)*2, cutoff: get(:ctrl_d1),res: get(:ctrl_d2), pan: get(:o2_pos), amp: get(:adjvol)
+      play get(:adjpitch), sustain: get(:adjdens)*2, pan: get(:o2_pos), amp: get(:adjvol)
     end
   end
   sleep get(:adjdens) + 0.2

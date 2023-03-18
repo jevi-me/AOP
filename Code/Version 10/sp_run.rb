@@ -11,10 +11,173 @@
 
 
 live = 0
-test = 0
 
-# Test Set up
-if test == 1 then
+setup_test = 0
+live_test = 1
+
+define :rfiles do
+  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/replicator.rb"
+  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o1_player.rb"
+  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o2_player.rb"
+  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o3_player.rb"
+end
+
+define :test_o1 do
+  set :o1_ready, 1    
+  osc "/play/hit1", 1
+  sleep 1
+  osc "/play/hit2", 1
+  sleep 1
+  osc "/play/drone1", 1
+  sleep 1
+  osc "/play/drone2", 1
+  sleep 1
+  osc "/play/improv_burst", 1
+  
+  sleep 2
+  
+  set :loop_this, 1   
+  osc "/play/hit1", 1
+  sleep 3
+  set :loop_this, 0   
+  sleep 3
+  set :loop_this, 1   
+  osc "/play/hit2", 1
+  sleep 3
+  set :loop_this, 0   
+  sleep 3
+  set :loop_this, 1   
+  osc "/play/drone1", 1
+  sleep 3
+  set :loop_this, 0   
+  sleep 3
+  set :loop_this, 1  
+  osc "/play/drone2", 1
+  sleep 3
+  set :loop_this, 0  
+  sleep 3
+end
+
+define :test_o2_m1 do
+  set :o1_ready, 1
+  set :o2_ready, 1    
+  set :mut1, 1    
+  
+  osc "/play/hit1", 1
+  sleep 1
+  osc "/play/hit2", 1
+  sleep 1
+  osc "/play/drone1", 1
+  sleep 1
+  osc "/play/drone2", 1
+  sleep 1
+  osc "/play/improv_burst", 1
+  
+  sleep 2
+  
+  set :loop_this, 1   
+  osc "/play/hit1", 1
+  sleep 3
+  set :loop_this, 0  
+  sleep 3
+  set :loop_this, 1  
+  osc "/play/hit2", 1
+  sleep 3
+  set :loop_this, 0   
+  sleep 3
+  set :loop_this, 1   
+  osc "/play/drone1", 1
+  sleep 3
+  set :loop_this, 0  
+  sleep 3
+  set :loop_this, 1  
+  osc "/play/drone2", 1
+  sleep 3
+  set :loop_this, 0  
+  sleep 3
+end
+
+define :test_o2_m2 do
+  set :o1_ready, 1
+  set :o2_ready, 1    
+  set :mut2, 1    
+  
+  osc "/play/hit1", 1
+  sleep 1
+  osc "/play/hit2", 1
+  sleep 1
+  osc "/play/drone1", 1
+  sleep 1
+  osc "/play/drone2", 1
+  sleep 1
+  osc "/play/improv_burst", 1
+  
+  sleep 2
+  
+  set :loop_this, 1  
+  osc "/play/hit1", 1
+  sleep 3
+  set :loop_this, 0   
+  sleep 3
+  set :loop_this, 1  
+  osc "/play/hit2", 1
+  sleep 3
+  set :loop_this, 0  
+  sleep 3
+  set :loop_this, 1  
+  osc "/play/drone1", 1
+  sleep 3
+  set :loop_this, 0  
+  sleep 3
+  set :loop_this, 1  
+  osc "/play/drone2", 1
+  sleep 3
+  set :loop_this, 0  
+  sleep 3
+end
+
+define :test_o3 do
+  set :o1_ready, 1
+  set :o2_ready, 1
+  set :o3_ready, 1   
+  
+  osc "/play/hit1", 1
+  sleep 1
+  osc "/play/hit2", 1
+  sleep 1
+  osc "/play/drone1", 1
+  sleep 1
+  osc "/play/drone2", 1
+  sleep 1
+  osc "/play/improv_burst", 1
+  
+  sleep 2
+  
+  set :loop_this, 1   
+  osc "/play/hit1", 1
+  sleep 3
+  set :loop_this, 0   
+  sleep 3
+  set :loop_this, 1   
+  osc "/play/hit2", 1
+  sleep 3
+  set :loop_this, 0 
+  sleep 3
+  set :loop_this, 1  
+  osc "/play/drone1", 1
+  sleep 3
+  set :loop_this, 0  
+  sleep 3
+  set :loop_this, 1   
+  osc "/play/drone2", 1
+  sleep 3
+  set :loop_this, 0   
+  sleep 3
+end
+
+
+# Run Test Setup
+if setup_test == 1 then
   loop do
     play :c4, pan: -1
     sleep 1
@@ -23,10 +186,22 @@ if test == 1 then
   end
 end
 
-# Run Files
+# Run Live
 if live == 1 then
-  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/replicator.rb"
-  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o1_player.rb"
-  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o2_player.rb"
-  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o3_player.rb"
+  rfiles
+end
+
+
+# Run Live Test
+if live_test == 1 then
+  rfiles
+  sleep 4
+  
+  use_osc "localhost", 4560
+  
+  test_o1
+  #test_o2_m1
+  #test_o2_m2
+  #test_o3
+  
 end
