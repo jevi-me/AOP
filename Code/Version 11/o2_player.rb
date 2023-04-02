@@ -10,8 +10,8 @@
 # and the AOP (right channel) to perform within an ensemble.
 
 # Pitch: Higher than creature1 by 10 semitones
-# Sound: Mutation 0 – Chord Creature
-# Sound: Mutation 1 – Pitched Up on hits only
+# Sound: Mutation 0 – Pointillism Creature
+# Sound: Mutation 1 – Rough Sounding Creature
 
 use_debug false
 use_cue_logging false
@@ -32,7 +32,7 @@ set :chaos0, 0   #on of off
 set :chaos1, 0   #on or off
 set :chaos2, 0   #on or off
 
-set :loop_this, 0   #loop on or off
+set :loop_on, 0   #loop on or off
 set :o1_ready, 0    #o1 play, on or off
 set :o2_ready, 0    #o2 plays, on or off
 set :o3_ready, 0    #o3 plays, on or off
@@ -155,7 +155,7 @@ live_loop :o2_modes_1 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/1"
   if pad_no == 1 then
-    set :loop_this, val
+    set :loop_on, val
   end
 end
 
@@ -194,9 +194,9 @@ live_loop :o2_hit1_on do
   btn_no, vel = sync "/osc*/play/hit1"
   if get(:o2_ready) == 1 then
     osc "/o2_prop/hit1", 1
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o2_hit1_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           if get(:mut1) == 0 then
             use_synth :growl
             play get(:adjpitch) +4, pan: get(:o2_pos), amp: get(:adjvol)
@@ -247,9 +247,9 @@ live_loop :o2_hit2_on do
   btn_no, vel = sync "/osc*/play/hit2"
   if get(:o2_ready) == 1 then
     osc "/o2_prop/hit2", 1
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o2_hit2_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           if get(:mut1) == 0 then
             use_synth :piano
             play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
@@ -291,9 +291,9 @@ live_loop :o2_drone1_on do
   btn_no, vel = sync "/osc*/play/drone1"
   if get(:o2_ready) == 1 then
     osc "/o2_prop/drone1", 1
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o2_drone1_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           use_synth :prophet
           with_fx :vowel, vowel_sound: 5, voice: 4 do
           play get(:adjpitch), sustain: get(:adjdens), pan: get(:o2_pos), amp: get(:adjvol)*0.75
@@ -319,9 +319,9 @@ live_loop :o2_drone2_on do
   btn_no, vel = sync "/osc*/play/drone2"
   if get(:o2_ready) == 1 then
     osc "/o2_prop/drone2", 1
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o2_drone2_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           use_synth :prophet
           play get(:adjpitch)+4, sustain: get(:adjdens), pan: get(:o2_pos), amp: get(:adjvol)*0.75
           sleep get(:adjdens) + 0.2

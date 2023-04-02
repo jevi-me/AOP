@@ -9,7 +9,7 @@
 # as part of an instrument that allows both me (left channel)
 # and the AOP (right channel) to perform within an ensemble.
 
-# Sound: Fine Thin Sound Creature
+# Sound: Smooth Sounding Creature
 
 
 use_debug false
@@ -30,7 +30,7 @@ set :chaos0, 0   #on of off
 set :chaos1, 0   #on or off
 set :chaos2, 0   #on or off
 
-set :loop_this, 0   #loop on or off
+set :loop_on, 0   #loop on or off
 set :o1_ready, 0    #o1 play, on or off
 set :o2_ready, 0    #o2 plays, on or off
 set :o3_ready, 0    #o3 plays, on or off
@@ -159,7 +159,7 @@ live_loop :o1_modes_1 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/1"
   if pad_no == 1 then
-    set :loop_this, val
+    set :loop_on, val
   end
 end
 
@@ -197,9 +197,9 @@ live_loop :o1_hit1_on do
   use_real_time
   btn_no, vel = sync "/osc*/play/hit1"
   if get(:o1_ready) == 1 then
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o1_hit1_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           use_synth :pretty_bell
           play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol), on: get(:o1_on)
           sleep get(:adjdens) + 0.2
@@ -220,9 +220,9 @@ live_loop :o1_hit2_on do
   use_real_time
   btn_no, vel = sync "/osc*/play/hit2"
   if get(:o1_ready) == 1 then
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o1_hit2_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           use_synth :fm
           play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol), on: get(:o1_on)
           sleep get(:adjdens) + 0.2
@@ -243,9 +243,9 @@ live_loop :o1_drone1_on do
   use_real_time
   btn_no, vel = sync "/osc*/play/drone1"
   if get(:o1_ready) == 1 then
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o1_drone1_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           use_synth :fm
           with_fx :vowel, vowel_sound: 1, voice: 1 do
           play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos), on: get(:o1_on)
@@ -270,9 +270,9 @@ live_loop :o1_drone2_on do
   use_real_time
   btn_no, vel = sync "/osc*/play/drone2"
   if get(:o1_ready) == 1 then
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o1_drone2_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           use_synth :fm
           with_fx :vowel, vowel_sound: 5, voice: 4 do
           play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos), on: get(:o1_on)

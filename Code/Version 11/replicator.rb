@@ -31,7 +31,7 @@ c_name=["hit1","drone2", "hit2", "drone1",
 
 
 # Values for Pads (Toggle Mode, Note Play)
-p_name=["loop_this","o1_ready","o2_ready","o3_ready", #pads
+p_name=["loop_on","o1_ready","o2_ready","o3_ready", #pads
         "mut1","chaos0","chaos1","chaos2"]
 
 set :mut1, 0     #on or off
@@ -39,7 +39,7 @@ set :chaos0, 0     #on of off
 set :chaos1, 0   #on or off
 set :chaos2, 0   #on or off
 
-set :loop_this, 0   #loop on or off
+set :loop_on, 0   #loop on or off
 set :o1_ready, 0    #o1 play, on or off
 set :o2_ready, 0    #o2 plays, on or off
 set :o3_ready, 0    #o3 plays, on or off
@@ -213,8 +213,8 @@ live_loop :pad_chg1 do
   val = norm(val)
   if pad_no == 1 then
     #puts p_name[0], val
-    set :loop_this, val
-    osc "/modes/1", pad_no, "loop_this", val
+    set :loop_on, val
+    osc "/modes/1", pad_no, "loop_on", val
   end
 end
 
@@ -258,14 +258,14 @@ live_loop :bt0 do #1
   use_real_time
   b= sync "/osc*/b0"
   #puts c_name[0]
-  osc "/play/hit1", 1
+  osc "/play/button1", 1
 end
 
 live_loop :bt2 do #3
   use_real_time
   b= sync "/osc*/b2"
   #puts c_name[2]
-  osc "/play/hit2", 1
+  osc "/play/button3", 1
 end
 
 
@@ -274,11 +274,11 @@ live_loop :rud do #up/down
   b= sync "/osc*/rud"
   if b[0] > 0
     #puts c_name[0]
-    osc "/play/hit1", 1
+    osc "/play/rudup", 1
   end
   if b[0] < 0
     #puts c_name[2]
-    osc "/play/hit2", 1
+    osc "/play/ruddown", 1
   end
 end
 
@@ -287,14 +287,14 @@ live_loop :bt3 do #4
   use_real_time
   b= sync "/osc*/b3"
   #puts c_name[3]
-  osc "/play/drone1", 1
+  osc "/play/button4", 1
 end
 
 live_loop :bt1 do #2
   use_real_time
   b= sync "/osc*/b1"
   #puts c_name[1]
-  osc "/play/drone2", 1
+  osc "/play/button2", 1
 end
 
 
@@ -303,11 +303,11 @@ live_loop :rlr do # left/right
   b= sync "/osc*/rlr"
   if b[0] > 0
     #puts c_name[1]
-    osc "/play/drone1", 1
+    osc "/play/rudleft", 1
   end
   if b[0] < 0
     #puts c_name[3]
-    osc "/play/drone2", 1
+    osc "/play/rudright", 1
   end
 end
 

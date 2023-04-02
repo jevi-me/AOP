@@ -48,7 +48,7 @@ set :chaos0, 0   #on of off
 set :chaos1, 0   #on or off
 set :chaos2, 0   #on or off
 
-set :loop_this, 0   #loop on or off
+set :loop_on, 0   #loop on or off
 set :o1_ready, 0    #o1 play, on or off
 set :o2_ready, 0    #o2 plays, on or off
 set :o3_ready, 0    #o3 plays, on or off
@@ -171,7 +171,7 @@ live_loop :o3_modes_1 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/1"
   if pad_no == 1 then
-    set :loop_this, val
+    set :loop_on, val
   end
 end
 
@@ -209,9 +209,9 @@ live_loop :o3_hit1_on do
   use_real_time
   btn_no, vel = sync "/osc*/o2_prop/hit1"
   if get(:o3_ready) == 1 then
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o3_hit1_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           sample throb, amp: get(:adjvol), pan: get(:o3_pos), finish: throb_fin_1
           sleep 0.2 + get(:adjdens)
         end
@@ -231,9 +231,9 @@ live_loop :o3_hit2_on do
   use_real_time
   btn_no, vel = sync "/osc*/o2_prop/hit2"
   if get(:o3_ready) == 1 then
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o3_hit1_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: turbine_fin_1
           sleep 0.2 + get(:adjdens)
         end
@@ -252,9 +252,9 @@ live_loop :o3_drone1_on do
   use_real_time
   btn_no, vel = sync "/osc*/o2_prop/drone1"
   if get(:o3_ready) == 1 then
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o3_drone1_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           sample ffield, amp: get(:adjvol), pan: get(:o3_pos), finish: ffield_fin
           sleep 1 + get(:adjdens)
         end
@@ -274,9 +274,9 @@ live_loop :o3_drone2_on do
   use_real_time
   btn_no, vel = sync "/osc*/o2_prop/drone2"
   if get(:o3_ready) == 1 then
-    if get(:loop_this) == 1 then
+    if get(:loop_on) == 1 then
       live_loop :o3_drone2_loop_on do
-        while get(:loop_this) == 1 do
+        while get(:loop_on) == 1 do
           sample cmal2, amp: get(:adjvol), pan: get(:o3_pos), finish: cmal2_fin
           sleep 3 + get(:adjdens)
         end
