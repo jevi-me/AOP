@@ -9,65 +9,66 @@
 # as part of an instrument that allows both me (left channel)
 # and the AOP (right channel) to perform within an ensemble.
 
+#TODO: Fix the use of the test fucntions' use of env_ready variable and buttons that are meant to kill the loops.
 
-live = 1
+live = 0
 
-setup_test = 
-live_test = 0
+setup_test = 0
+live_test = 1
 
 define :rfiles do
   run_file "/Users/jevi/GitHub/EOA/Code/Version 10/replicator.rb"
   run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o1_player.rb"
-  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o2_player.rb"
-  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o3_player.rb"
+  #run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o2_player.rb"
+  #run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o3_player.rb"
 end
 
 define :test_o1 do
   set :o1_ready, 1
-  osc "/play/hit1", 1
+  osc "/play/button1", 1
   sleep 1
-  osc "/play/hit2", 1
+  osc "/play/button3", 1
   sleep 1
-  osc "/play/drone1", 1
+  osc "/play/button4", 1
   sleep 1
-  osc "/play/drone2", 1
+  osc "/play/button2", 1
   sleep 1
   osc "/play/improv_burst", 1
   
   sleep 2
 
-  osc "play/trigger-l-up", 1
+  osc "play/bumper-l-up", 1
   sleep 3
-  osc "play/trigger-l-down", 1
+  osc "play/bumper-l-down", 1
   sleep 3  
-  osc "play/trigger-r-up", 1
+  osc "play/bumper-r-up", 1
   sleep 3
-  osc "play/trigger-r-down", 1
+  osc "play/bumper-r-down", 1
   
   sleep 3
   
-  set :loop_this, 1
-  osc "/play/hit1", 1
+  set :env_ready, 1
+  osc "/play/button1", 1
   sleep 3
-  set :loop_this, 0
-  sleep 3
-
-  set :loop_this, 1
-  osc "/play/hit2", 1
-  sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
   sleep 3
 
-  set :loop_this, 1
-  osc "/play/drone1", 1
+  set :env_ready, 1
+  osc "/play/button3", 1
   sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
   sleep 3
 
-  set :loop_this, 1
-  osc "/play/drone2", 1
+  set :env_ready, 1
+  osc "/play/button4", 1
   sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
+  sleep 3
+
+  set :env_ready, 1
+  osc "/play/button2", 1
+  sleep 3
+  set :env_ready, 0
   sleep 3
 
 end
@@ -75,80 +76,80 @@ end
 define :test_o2_m1 do
   set :o1_ready, 1
   set :o2_ready, 1
-  set :mut1, 0
+  set :mut_o2, 0
   
-  osc "/play/hit1", 1
+  osc "/play/button1", 1
   sleep 1
-  osc "/play/hit2", 1
+  osc "/play/button3", 1
   sleep 1
-  osc "/play/drone1", 1
+  osc "/play/button4", 1
   sleep 1
-  osc "/play/drone2", 1
+  osc "/play/button2", 1
   
   sleep 2
   
-  set :loop_this, 1
-  osc "/play/hit1", 1
+  set :env_ready, 1
+  osc "/play/button1", 1
   sleep 3
-  set :loop_this, 0
-  sleep 3
-
-  set :loop_this, 1
-  osc "/play/hit2", 1
-  sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
   sleep 3
 
-  set :loop_this, 1
-  osc "/play/drone1", 1
+  set :env_ready, 1
+  osc "/play/button3", 1
   sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
   sleep 3
 
-  set :loop_this, 1
-  osc "/play/drone2", 1
+  set :env_ready, 1
+  osc "/play/button4", 1
   sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
+  sleep 3
+
+  set :env_ready, 1
+  osc "/play/button2", 1
+  sleep 3
+  set :env_ready, 0
   sleep 3
 end
 
 define :test_o2_m2 do
   set :o1_ready, 1
   set :o2_ready, 1
-  set :mut1, 1
+  set :mut_o2, 1
   
-  osc "/play/hit1", 1
+  osc "/play/button1", 1
   sleep 1
-  osc "/play/hit2", 1
+  osc "/play/button3", 1
   sleep 1
-  osc "/play/drone1", 1
+  osc "/play/button4", 1
   sleep 1
-  osc "/play/drone2", 1
+  osc "/play/button2", 1
   
   sleep 2
   
-  set :loop_this, 1
-  osc "/play/hit1", 1
+  set :env_ready, 1
+  osc "/play/button1", 1
   sleep 3
-  set :loop_this, 0
-  sleep 3
-
-  set :loop_this, 1
-  osc "/play/hit2", 1
-  sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
   sleep 3
 
-  set :loop_this, 1
-  osc "/play/drone1", 1
+  set :env_ready, 1
+  osc "/play/button3", 1
   sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
   sleep 3
 
-  set :loop_this, 1
-  osc "/play/drone2", 1
+  set :env_ready, 1
+  osc "/play/button4", 1
   sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
+  sleep 3
+
+  set :env_ready, 1
+  osc "/play/button2", 1
+  sleep 3
+  set :env_ready, 0
   sleep 3
 end
 
@@ -157,38 +158,38 @@ define :test_o3 do
   set :o2_ready, 1
   set :o3_ready, 1
   
-  osc "/play/hit1", 1
+  osc "/play/button1", 1
   sleep 4
-  osc "/play/hit2", 1
+  osc "/play/button3", 1
   sleep 4
-  osc "/play/drone1", 1
+  osc "/play/button4", 1
   sleep 4
-  osc "/play/drone2", 1
+  osc "/play/button2", 1
   
   sleep 4
   
-  set :loop_this, 1
-  osc "/play/hit1", 1
+  set :env_ready, 1
+  osc "/play/button1", 1
   sleep 3
-  set :loop_this, 0
-  sleep 3
-
-  set :loop_this, 1
-  osc "/play/hit2", 1
-  sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
   sleep 3
 
-  set :loop_this, 1
-  osc "/play/drone1", 1
+  set :env_ready, 1
+  osc "/play/button3", 1
   sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
   sleep 3
 
-  set :loop_this, 1
-  osc "/play/drone2", 1
+  set :env_ready, 1
+  osc "/play/button4", 1
   sleep 3
-  set :loop_this, 0
+  set :env_ready, 0
+  sleep 3
+
+  set :env_ready, 1
+  osc "/play/button2", 1
+  sleep 3
+  set :env_ready, 0
   sleep 3
 end
 
