@@ -6,13 +6,14 @@
 #                   \/
 # "Evo"
 # Uses a Akai LPD8 Mk2 Laptop Pad Controller and Game Controller
-# as part of an instrument that allows both me (left channel)
-# and the AOP (right channel) to perform within an ensemble.
+# as part of a collection of instruments that performs within an ensemble.
 
+use_debug false
+use_cue_logging false
 
-live = 0
+live = 1
 
-setup_test = 1
+setup_test = 0
 live_test = 0
 
 define :rfiles do
