@@ -8,7 +8,7 @@
 # Uses a Akai LPD8 Mk2 Laptop Pad Controller and Game Controller
 # as part of a collection of instruments that performs within an ensemble.
 
-# Sound: Smooth Sounding Creature
+# Sound: Noisy Sounding Creature
 
 use_debug false
 use_cue_logging false
@@ -23,6 +23,14 @@ set :o1_pos, -1     #Play in the left channel
 set :o1_on, 1       #Determines whether the O1 will play any sound (Allows for it to be muted)
 set :o1_loop1, 0    #Determines whether the O1 will play loop1 sound
 set :o1_loop2, 0    #Determines whether the O1 will play loop2 sound
+sample_free_all
+turbine = "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Sci-Fi_Large_Turbine_Loop_3.wav"
+turbine_fin = 0.6 #3/5 # Finish = 1/(duration of sample) * 3  | 3 = length of a "breath"
+turbine_fin_1 = 0.2 #1/5 # Finish = 1/(duration of sample) * 1  | 1 = length of a "hit"
+cmal2 =  "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Mountain_Audio_-_Computer_Malfunction_-_Sound_\(2\).wav"
+cmal2_fin = 0.375 #3/8
+cmal2_fin_1 = 0.125 #1/8
+
 
 # Values for Pads (Toggle Mode, Note Play)
 set :mut_o2, 0      #O2 mut0 or mut1
@@ -200,9 +208,8 @@ live_loop :o1_loop1_on_trigger do        #o1 loop1 is triggered to go on
     if get(:o1_ready) == 1 then
       live_loop :o1_env_l1 do            #liveloop for l1
         while get(:o1_loop1) == 1 do     #while o1 loop1 value is 1
-          use_synth :pretty_bell
-          play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o1_pos), amp: get(:adjvol), on: get(:o1_on)
-          sleep get(:adjdens) + 0.2
+          sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: turbine_fin_1, on: get(:o1_on)
+          sleep 0.2 + get(:adjdens) 
         end
         stop
         sleep get(:adjdens) + 0.2
@@ -237,10 +244,7 @@ live_loop :o1_loop2_on_trigger do        #o1 loop2 is triggered to go on
     if get(:o1_ready) == 1 then
       live_loop :o1_env_l2 do            #liveloop for l2
         while get(:o1_loop2) == 1 do     #while o1 loop2 value is 1
-          use_synth :fm
-          with_fx :vowel, vowel_sound: 5, voice: 4 do
-            play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos), on: get(:o1_on)
-          end
+          sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: turbine_fin_1, on: get(:o1_on)
           sleep get(:adjdens) + 0.2
         end
         stop
@@ -289,12 +293,12 @@ live_loop :bumper_l_down_on do
   sleep get(:adjdens) + 0.2
 end
 
-## Right Bumper Up – Guitar
+## Right Bumper Up – Computer Malfunction
 live_loop :bumper_r_up_on do
   use_real_time
   btn_no, vel = sync "/osc*/play/bumper-r-up" 
-  sample :guit_e_slide, amp: get(:adjvol) 
-  sleep get(:adjdens) + 0.2
+  sample cmal2, amp: get(:adjvol), pan: get(:o3_pos), finish: cmal2_fin
+  sleep get(:adjdens) + 3
 end 
 
 ## Right Bumper Down – Weirdo

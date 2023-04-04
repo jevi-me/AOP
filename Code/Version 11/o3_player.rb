@@ -8,7 +8,7 @@
 # Uses a Akai LPD8 Mk2 Laptop Pad Controller and Game Controller
 # as part of a collection of instruments that performs within an ensemble.
 
-# Sound: Noisy Creature
+# Sound: Smooth Creature
 
 use_debug false
 use_cue_logging false
@@ -23,24 +23,6 @@ set :o3_pos, 1      #Play in the left channel
 set :o3_loop1, 0    #Determines whether the O3 will play loop1 sound
 set :o3_loop2, 0    #Determines whether the O3 will play loop2 sound
 
-#Samples
-sample_free_all
-#ffield = "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/ForceFieldHum_BW.45030.wav"
-cmal2 =  "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Mountain_Audio_-_Computer_Malfunction_-_Sound_\(2\).wav"
-#throb = "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Rhythmic_Electrical_Throbbing.wav"
-turbine = "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Sci-Fi_Large_Turbine_Loop_3.wav"
-
-# Finish = 1/(duration of sample) * 3  | 3 = length of a "breath"
-#ffield_fin =  0.05 #3/64
-cmal2_fin = 0.375 #3/8
-#throb_fin = 0.75 #3/4
-turbine_fin = 0.6 #3/5
-
-# Finish = 1/(duration of sample) * 1  | 1 = length of a "hit"
-#ffield_fin_1 =  0.01 #1/64
-cmal2_fin_1 = 0.125 #1/8
-#throb_fin_1 = 0.25 #1/4
-turbine_fin_1 = 0.2 #1/5
 
 
 # Values for Pads (Toggle Mode, Note Play)
@@ -216,10 +198,13 @@ live_loop :o3_loop1_on_trigger do        #o3 loop1 is triggered to go on
   if get(:env_ready) == 1 then
     if get(:o3_ready) == 1 then
       live_loop :o3_env_l1 do            #liveloop for l1
-        while get(:o3_loop1) == 1 do     #while o3 loop1 value is 1          
-          sample cmal2, amp: get(:adjvol), pan: get(:o3_pos), finish: cmal2_fin
-          sleep 3 + get(:adjdens)
-        end
+        while get(:o3_loop2) == 1 do     #while o3 loop2 value is 1
+            use_synth :growl
+            play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)
+            use_synth :dark_ambience
+            with_fx :vowel, vowel_sound: 5, voice: 4 do
+              play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)
+            end            end
         stop
         sleep get(:adjdens) + 0.2
       end
@@ -250,8 +235,10 @@ live_loop :o3_loop2_on_trigger do        #o3 loop2 is triggered to go on
     if get(:o3_ready) == 1 then
       live_loop :o3_env_l2 do            #liveloop for l2
         while get(:o3_loop2) == 1 do     #while o3 loop2 value is 1
-          sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: turbine_fin_1
-          sleep 0.2 + get(:adjdens) 
+          use_synth :dark_ambience
+            play get(:adjpitch) + 8, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)
+            use_synth :hollow
+            play get(:adjpitch) + 8, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)
         end
         stop
         sleep get(:adjdens) + 0.2

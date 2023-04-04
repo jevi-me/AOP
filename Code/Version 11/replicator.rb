@@ -108,9 +108,9 @@ live_loop :knb_chg12 do
   knb_no, val = sync "/midi*12/control_change"
   val = normf(val)
   if knb_no == 4 then
-    set :adjdens, val
-    #puts k_name[3], val
-    osc "/enviro/4", knb_no, "adjdens", val
+    set :adjdens, (val*4 + 0.2)
+    puts k_name[3], (val*4 + 0.2)
+    osc "/enviro/4", knb_no, "adjdens", (val*4 + 0.2)
   end
 end
 
@@ -121,7 +121,7 @@ live_loop :knb_chg13 do
   if knb_no == 5 then
     set :adjdec, (val*2 + 0.2)
     #puts k_name[4], (val*2 + 0.2)
-    osc "/enviro/5", knb_no, "adjdec", (val*2 + 0.2)
+    osc "/enviro/5", knb_no, "adjdec", val
   end
 end
 
@@ -286,25 +286,30 @@ live_loop :rud do #up/down
   b= sync "/osc*/rud"
   if b[0] > 0
     #puts c_name[0]
-    osc "/play/rudup", 1
+    #osc "/play/rudup", 1
+    osc "/play/button1", 1
   end
   if b[0] < 0
     #puts c_name[2]
-    osc "/play/ruddown", 1
+    #osc "/play/ruddown", 1
+    osc "/play/button3", 1
   end
 end
-
 
 live_loop :rlr do # left/right
   use_real_time
   b= sync "/osc*/rlr"
   if b[0] > 0
     #puts c_name[1]
-    osc "/play/rudleft", 1
+    #osc "/play/rudright", 1
+    osc "/play/button2", 1
+
   end
   if b[0] < 0
     #puts c_name[3]
-    osc "/play/rudright", 1
+    #osc "/play/rudleft", 1
+    osc "/play/button4", 1
+
   end
 end
 

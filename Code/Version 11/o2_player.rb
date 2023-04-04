@@ -12,6 +12,7 @@
 # Sound: Mutation 0 – Pointillism Creature
 # Sound: Mutation 1 – Rough Sounding Creature
 
+
 use_debug false
 use_cue_logging false
 use_osc "localhost", 4560
@@ -208,19 +209,12 @@ live_loop :o2_loop1_on_trigger do        #o2 loop1 is triggered to go on
         while get(:o2_loop1) == 1 do
           if get(:mut_o2) == 0 then
             use_synth :mod_beep
-            play get(:adjpitch)+10, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
-            use_synth :mod_pulse
-            play get(:adjpitch)+5, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
-            use_synth :mod_tri
-            play get(:adjpitch)+0, decay: get(:adjdec), ssustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
+            play get(:adjpitch)+10, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
           end
           if get(:mut_o2) == 1 then
-            use_synth :growl
-            play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
-            use_synth :dark_ambience
-            with_fx :vowel, vowel_sound: 5, voice: 4 do
-              play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
-            end       
+              use_synth :pretty_bell
+          play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o1_pos), amp: get(:adjvol), on: get(:o2_on)
+          sleep get(:adjdens) + 0.2
           end
           sleep get(:adjdens) + 0.2
         end
@@ -257,21 +251,13 @@ live_loop :o2_loop2_on_trigger do        #o2 loop1 is triggered to go on
         while get(:o2_loop2) == 1 do
           if get(:mut_o2) == 0 then
             use_synth :mod_sine
-            play get(:adjpitch)+7, decay: get(:adjdec), sustain: 0.2, release: 0.2, pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
-            use_synth :mod_dsaw
-            play get(:adjpitch)+2, decay: get(:adjdec), sustain: 0.2, release: 0.2, pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
-            use_synth :mod_fm
-            play get(:adjpitch)+10, decay: get(:adjdec), sustain: 0.2, release: 0.2, pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
+            play get(:adjpitch)+10, decay: get(:adjdec), sustain: 0.2, release: 0.2, pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
           end
           if get(:mut_o2) == 1 then
-            use_synth :growl
-            play get(:adjpitch) +8, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
-            use_synth :dark_ambience
-            use_synth :blade
-            play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
-            with_fx :vowel, vowel_sound: 5, voice: 4 do
-              play get(:adjpitch) + 8, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
-            end
+            use_synth :fm
+          with_fx :vowel, vowel_sound: 5, voice: 4 do
+            play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos), on: get(:o2_on)
+          end
           end
           sleep get(:adjdens) + 0.2
         end
