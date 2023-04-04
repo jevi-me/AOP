@@ -8,7 +8,7 @@
 # Uses a Akai LPD8 Mk2 Laptop Pad Controller and Game Controller
 # as part of a collection of instruments that performs within an ensemble.
 
-# Pitch: Higher than creature1 by 10 semitones
+# Pitch: Higher than creature1
 # Sound: Mutation 0 – Pointillism Creature
 # Sound: Mutation 1 – Rough Sounding Creature
 
