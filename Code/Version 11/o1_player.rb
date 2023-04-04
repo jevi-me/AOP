@@ -194,23 +194,20 @@ end
 live_loop :o1_loop1_on_trigger do        #o1 loop1 is triggered to go on
   use_real_time
   btn_no, vel = sync "/osc*/play/button1"
-  set :o1_loop1, 1                       #turn the loop1 switch on
+  set :o1_loop1, 1 
+  sleep 0.01                       #turn the loop1 switch on
   if get(:env_ready) == 1 then
     if get(:o1_ready) == 1 then
       live_loop :o1_env_l1 do            #liveloop for l1
         while get(:o1_loop1) == 1 do     #while o1 loop1 value is 1
           use_synth :pretty_bell
-          play get(:adjpitch), pan: get(:o1_pos), amp: get(:adjvol), on: get(:o1_on)
+          play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o1_pos), amp: get(:adjvol), on: get(:o1_on)
           sleep get(:adjdens) + 0.2
         end
         stop
         sleep get(:adjdens) + 0.2
       end
-    else
-     stop
     end
-  else
-     stop
   end
   sleep get(:adjdens) + 0.2
 end
@@ -220,7 +217,12 @@ live_loop :o1_loop1_off_trigger do       #o1 loop1 is triggered to go off
   use_real_time
   btn_no, vel = sync "/osc*/play/button3"
   if get(:o1_loop1) == 1 then 
-    set :o1_loop1, 0                       #turn the loop1 switch off
+    live_loop :o1_l1_off do 
+      while get(:o1_loop1) == 1 do
+        set :o1_loop1, 0    #turn the loop1 switch off
+      end
+      stop
+    end                   
   end
   sleep 0.2
 end
@@ -229,7 +231,8 @@ end
 live_loop :o1_loop2_on_trigger do        #o1 loop2 is triggered to go on
   use_real_time
   btn_no, vel = sync "/osc*/play/button4"
-  set :o1_loop2, 1                       #turn the loop2 switch on
+  set :o1_loop2, 1 
+  sleep 0.01                       #turn the loop2 switch on
   if get(:env_ready) == 1 then
     if get(:o1_ready) == 1 then
       live_loop :o1_env_l2 do            #liveloop for l2
@@ -243,11 +246,7 @@ live_loop :o1_loop2_on_trigger do        #o1 loop2 is triggered to go on
         stop
         sleep get(:adjdens) + 0.2
       end
-    else
-     stop
     end
-  else
-     stop
   end
   sleep get(:adjdens) + 0.2
 end

@@ -75,7 +75,7 @@ live_loop :o2_enviro_3 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/3"
   if knb_no == 3 then
-    set :adpitch, val+10  # Is a bit higher pitch
+    set :adpitch, val 
   end
 end
 
@@ -200,28 +200,35 @@ end
 live_loop :o2_loop1_on_trigger do        #o2 loop1 is triggered to go on
   use_real_time
   btn_no, vel = sync "/osc*/play/button1"
-  set :o2_loop1, 1                       #turn the loop1 switch on
+  set :o2_loop1, 1
+  sleep 0.01                        #turn the loop1 switch on
   if get(:env_ready) == 1 then
     osc "/o2_prop/button1", 1
     if get(:o2_ready) == 1 then
       live_loop :o2_env_l1 do
         while get(:o2_loop1) == 1 do
           if get(:mut_o2) == 0 then
-            # Pointillism Creature
+            use_synth :mod_beep
+            play get(:adjpitch)+10, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
+            use_synth :mod_pulse
+            play get(:adjpitch)+5, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
+            use_synth :mod_tri
+            play get(:adjpitch)+0, decay: get(:adjdec), ssustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
           end
           if get(:mut_o2) == 1 then
-            # Rough Creature
+            use_synth :growl
+            play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
+            use_synth :dark_ambience
+            with_fx :vowel, vowel_sound: 5, voice: 4 do
+              play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
+            end       
           end
           sleep get(:adjdens) + 0.2
         end
         stop
         sleep get(:adjdens) + 0.2   
       end
-    else
-      stop
     end
-  else
-    stop
   end
   sleep get(:adjdens) + 0.2
 end
@@ -231,39 +238,48 @@ end
 live_loop :o2_loop1_off_trigger do
   use_real_time
   btn_no, vel = sync "/osc*/play/button3"
-  osc "/o2_prop/button3", 1
+  osc "/o2_prop/button3", 0
   if get(:o2_loop1) == 1 then 
     set :o2_loop1, 0     #turn the loop1 switch off
   end                  
   sleep 0.2
 end
 
-# Start Loop 1
+# Start Loop 2
 live_loop :o2_loop2_on_trigger do        #o2 loop1 is triggered to go on
   use_real_time
   btn_no, vel = sync "/osc*/play/button4"
-  set :o2_loop2, 1                       #turn the loop1 switch on
+  set :o2_loop2, 1 
+  sleep 0.01                       #turn the loop1 switch on
   if get(:env_ready) == 1 then
     osc "/o2_prop/button4", 1
     if get(:o2_ready) == 1 then
       live_loop :o2_env_l2 do
         while get(:o2_loop2) == 1 do
           if get(:mut_o2) == 0 then
-            # Pointillism Creature
+            use_synth :mod_sine
+            play get(:adjpitch)+7, decay: get(:adjdec), sustain: 0.2, release: 0.2, pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
+            use_synth :mod_dsaw
+            play get(:adjpitch)+2, decay: get(:adjdec), sustain: 0.2, release: 0.2, pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
+            use_synth :mod_fm
+            play get(:adjpitch)+10, decay: get(:adjdec), sustain: 0.2, release: 0.2, pan: get(:o2_pos), amp: get(:adjvol)*0.75, on: get(:o2_on)
           end
           if get(:mut_o2) == 1 then
-            # Rough Creature
+            use_synth :growl
+            play get(:adjpitch) +8, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
+            use_synth :dark_ambience
+            use_synth :blade
+            play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
+            with_fx :vowel, vowel_sound: 5, voice: 4 do
+              play get(:adjpitch) + 8, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
+            end
           end
           sleep get(:adjdens) + 0.2
         end
         stop
         sleep get(:adjdens) + 0.2   
       end
-    else
-      stop
     end
-  else
-    stop
   end
   sleep get(:adjdens) + 0.2
 end
@@ -272,8 +288,8 @@ end
 live_loop :o2_loop2_off_trigger do
   use_real_time
   btn_no, vel = sync "/osc*/play/button2"
-  osc "/o2_prop/button2", 1
-  if get(:o2_loop1) == 1 then 
+  osc "/o2_prop/button2", 0
+  if get(:o2_loop2) == 1 then 
     set :o2_loop2, 0                       #turn the loop2 switch off
   end
   sleep 0.2
@@ -289,13 +305,13 @@ live_loop :o2_improv_on do
   
   ranSyn=     [rrand_i(0, slist.length-1), rrand_i(0,slist.length-1), rrand_i(0, slist.length-1)]
   ranNote=    [get(:adjpitch),get(:adjpitch),get(:adjpitch)]
-  ranAttack=  [rrand(0, 1), rrand(0,1), rrand(0, 1)]
-  ranRelease= [rrand(0, 1), rrand(0,1), rrand(0, 1)]
+  ranAttack=  [rrand(0, 1), get(:ctrl_d1), rrand(0, 1)]
+  ranRelease= [get(:ctrl_d1), rrand(0,1), get(:ctrl_d1)]
   
   if rrand_i(0,20) > 1 then
-    synth slist[ranSyn[0]],note: ranNote[0],attack: ranAttack[0], release: ranRelease[0], pan: get(:ctrl_d1), amp:  get(:adjvol), on: get(:o2_on)
-    synth slist[ranSyn[1]],note: ranNote[1],attack: ranAttack[1], release: ranRelease[1], pan: get(:ctrl_d1), amp:  get(:adjvol), on: get(:o2_on)
-    synth slist[ranSyn[2]],note: ranNote[2],attack: ranAttack[2], release: ranRelease[2], pan: get(:ctrl_d1), amp:  get(:adjvol), on: get(:o2_on)
+    synth slist[ranSyn[0]], note: ranNote[0], attack: ranAttack[0], release: ranRelease[0], amp:  get(:adjvol), on: get(:o2_on)
+    synth slist[ranSyn[1]], note: ranNote[1], attack: ranAttack[1], release: ranRelease[1], amp:  get(:adjvol), on: get(:o2_on)
+    synth slist[ranSyn[2]], note: ranNote[2], attack: ranAttack[2], release: ranRelease[2], amp:  get(:adjvol), on: get(:o2_on)
   else
     synth :cnoise, sustain: 0.5, amp: get(:adjvol), on: get(:o2_on)
   end
