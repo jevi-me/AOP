@@ -198,13 +198,15 @@ live_loop :o3_loop1_on_trigger do        #o3 loop1 is triggered to go on
   if get(:env_ready) == 1 then
     if get(:o3_ready) == 1 then
       live_loop :o3_env_l1 do            #liveloop for l1
-        while get(:o3_loop2) == 1 do     #while o3 loop2 value is 1
+        while get(:o3_loop1) == 1 do     #while o3 loop2 value is 1
             use_synth :growl
-            play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)
+            play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o3_pos), amp: get(:adjvol)
             use_synth :dark_ambience
             with_fx :vowel, vowel_sound: 5, voice: 4 do
-              play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)
-            end            end
+              play get(:adjpitch) + 4, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o3_pos), amp: get(:adjvol)
+            end 
+            sleep get(:adjdens) + 0.2
+        end
         stop
         sleep get(:adjdens) + 0.2
       end
@@ -236,9 +238,10 @@ live_loop :o3_loop2_on_trigger do        #o3 loop2 is triggered to go on
       live_loop :o3_env_l2 do            #liveloop for l2
         while get(:o3_loop2) == 1 do     #while o3 loop2 value is 1
           use_synth :dark_ambience
-            play get(:adjpitch) + 8, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)
-            use_synth :hollow
-            play get(:adjpitch) + 8, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol)
+          play get(:adjpitch) + 8, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o3_pos), amp: get(:adjvol)
+          use_synth :hollow
+          play get(:adjpitch) + 8, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o3_pos), amp: get(:adjvol)
+          sleep get(:adjdens) + 0.2
         end
         stop
         sleep get(:adjdens) + 0.2

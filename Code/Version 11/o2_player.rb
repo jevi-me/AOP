@@ -212,9 +212,8 @@ live_loop :o2_loop1_on_trigger do        #o2 loop1 is triggered to go on
             play get(:adjpitch)+10, decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
           end
           if get(:mut_o2) == 1 then
-              use_synth :pretty_bell
-          play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o1_pos), amp: get(:adjvol), on: get(:o2_on)
-          sleep get(:adjdens) + 0.2
+          use_synth :pretty_bell
+          play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
           end
           sleep get(:adjdens) + 0.2
         end
@@ -256,7 +255,7 @@ live_loop :o2_loop2_on_trigger do        #o2 loop1 is triggered to go on
           if get(:mut_o2) == 1 then
             use_synth :fm
           with_fx :vowel, vowel_sound: 5, voice: 4 do
-            play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o1_pos), on: get(:o2_on)
+            play get(:adjpitch), decay: get(:adjdec), sustain: get(:adjsus), release: get(:adjrel), amp: get(:adjvol), pan: get(:o2_pos), on: get(:o2_on)
           end
           end
           sleep get(:adjdens) + 0.2

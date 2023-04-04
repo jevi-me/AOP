@@ -208,7 +208,7 @@ live_loop :o1_loop1_on_trigger do        #o1 loop1 is triggered to go on
     if get(:o1_ready) == 1 then
       live_loop :o1_env_l1 do            #liveloop for l1
         while get(:o1_loop1) == 1 do     #while o1 loop1 value is 1
-          sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: turbine_fin_1, on: get(:o1_on)
+          sample turbine, amp: get(:adjvol), pan: get(:o1_pos), finish: turbine_fin_1, on: get(:o1_on)
           sleep 0.2 + get(:adjdens) 
         end
         stop
@@ -244,7 +244,7 @@ live_loop :o1_loop2_on_trigger do        #o1 loop2 is triggered to go on
     if get(:o1_ready) == 1 then
       live_loop :o1_env_l2 do            #liveloop for l2
         while get(:o1_loop2) == 1 do     #while o1 loop2 value is 1
-          sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: turbine_fin_1, on: get(:o1_on)
+          sample turbine, amp: get(:adjvol), pan: get(:o1_pos), finish: turbine_fin_1, on: get(:o1_on)
           sleep get(:adjdens) + 0.2
         end
         stop
