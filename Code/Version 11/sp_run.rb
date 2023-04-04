@@ -9,12 +9,11 @@
 # as part of an instrument that allows both me (left channel)
 # and the AOP (right channel) to perform within an ensemble.
 
-#TODO: Fix the use of the test fucntions' use of env_ready variable and buttons that are meant to kill the loops.
 
 live = 0
 
-setup_test = 0
-live_test = 1
+setup_test = 1
+live_test = 0
 
 define :rfiles do
   run_file "/Users/jevi/GitHub/EOA/Code/Version 11/replicator.rb"
