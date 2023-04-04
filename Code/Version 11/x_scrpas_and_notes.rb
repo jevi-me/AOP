@@ -70,3 +70,31 @@ live_loop :chaos2_loop do
   end
 end       
 
+
+
+
+
+use_synth :growl
+            play get(:adjpitch) +4, pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
+            use_synth :dark_ambience
+            with_fx :vowel, vowel_sound: 5, voice: 4 do
+              play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
+            end
+
+
+
+
+            use_synth :growl
+            play get(:adjpitch) +8, pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
+            use_synth :dark_ambience
+            with_fx :vowel, vowel_sound: 5, voice: 4 do
+              play get(:adjpitch) + 12, pan: get(:o2_pos), amp: get(:adjvol), on: get(:o2_on)
+            end
+
+
+
+                  use_synth :prophet
+      with_fx :vowel, vowel_sound: 5, voice: 4 do
+      play get(:adjpitch), sustain: get(:adjdens), pan: get(:o2_pos), amp: get(:adjvol)*0.75
+      end
+

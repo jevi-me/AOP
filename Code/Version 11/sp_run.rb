@@ -17,147 +17,90 @@ setup_test = 0
 live_test = 1
 
 define :rfiles do
-  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/replicator.rb"
-  run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o1_player.rb"
-  #run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o2_player.rb"
-  #run_file "/Users/jevi/GitHub/EOA/Code/Version 10/o3_player.rb"
+  run_file "/Users/jevi/GitHub/EOA/Code/Version 11/replicator.rb"
+  run_file "/Users/jevi/GitHub/EOA/Code/Version 11/o1_player.rb"
+  run_file "/Users/jevi/GitHub/EOA/Code/Version 11/o2_player.rb"
+  run_file "/Users/jevi/GitHub/EOA/Code/Version 11/o3_player.rb"
 end
 
 define :test_o1 do
+  set :env_ready, 1
   set :o1_ready, 1
+  set :o1_on, 1
+
   osc "/play/button1", 1
-  sleep 1
+  sleep 4
   osc "/play/button3", 1
-  sleep 1
+  sleep 4
   osc "/play/button4", 1
-  sleep 1
+  sleep 4
   osc "/play/button2", 1
-  sleep 1
-  osc "/play/improv_burst", 1
-  
-  sleep 2
+  sleep 4
 
   osc "play/bumper-l-up", 1
-  sleep 3
+  sleep 5
   osc "play/bumper-l-down", 1
-  sleep 3  
+  sleep 5  
   osc "play/bumper-r-up", 1
-  sleep 3
+  sleep 5
   osc "play/bumper-r-down", 1
-  
-  sleep 3
-  
-  set :env_ready, 1
-  osc "/play/button1", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
-  set :env_ready, 1
-  osc "/play/button3", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
-  set :env_ready, 1
-  osc "/play/button4", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
-  set :env_ready, 1
-  osc "/play/button2", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
+  sleep 4
 end
 
 define :test_o2_m1 do
+  set :env_ready, 1
   set :o1_ready, 1
   set :o2_ready, 1
+  set :o2_on, 1
   set :mut_o2, 0
   
   osc "/play/button1", 1
-  sleep 1
+  sleep 4
   osc "/play/button3", 1
-  sleep 1
+  sleep 4
   osc "/play/button4", 1
-  sleep 1
+  sleep 4
   osc "/play/button2", 1
-  
-  sleep 2
-  
-  set :env_ready, 1
-  osc "/play/button1", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
+  sleep 4
 
-  set :env_ready, 1
-  osc "/play/button3", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
-  set :env_ready, 1
-  osc "/play/button4", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
-  set :env_ready, 1
-  osc "/play/button2", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
+  osc "/play/improv_burst", 1
+  osc "/play/improv_burst", 1
+  osc "/play/improv_burst", 1
+  osc "/play/improv_burst", 1
+  osc "/play/improv_burst", 1
+  osc "/play/improv_burst", 1
+  osc "/play/improv_burst", 1
+  osc "/play/improv_burst", 1
+  osc "/play/improv_burst", 1
+  osc "/play/improv_burst", 1
+  sleep 4
 end
 
 define :test_o2_m2 do
+  set :env_ready, 1
   set :o1_ready, 1
   set :o2_ready, 1
+  set :o2_on, 1
   set :mut_o2, 1
   
   osc "/play/button1", 1
-  sleep 1
+  sleep 4
   osc "/play/button3", 1
-  sleep 1
+  sleep 4
   osc "/play/button4", 1
-  sleep 1
+  sleep 4
   osc "/play/button2", 1
-  
-  sleep 2
-  
-  set :env_ready, 1
-  osc "/play/button1", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
-  set :env_ready, 1
-  osc "/play/button3", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
-  set :env_ready, 1
-  osc "/play/button4", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
-  set :env_ready, 1
-  osc "/play/button2", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
+  sleep 4
 end
 
 define :test_o3 do
+  set :env_ready, 1
   set :o1_ready, 1
   set :o2_ready, 1
   set :o3_ready, 1
-  
+  set :o2_on, 1
+  set :o3_on, 1
+
   osc "/play/button1", 1
   sleep 4
   osc "/play/button3", 1
@@ -165,32 +108,7 @@ define :test_o3 do
   osc "/play/button4", 1
   sleep 4
   osc "/play/button2", 1
-  
   sleep 4
-  
-  set :env_ready, 1
-  osc "/play/button1", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
-  set :env_ready, 1
-  osc "/play/button3", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
-  set :env_ready, 1
-  osc "/play/button4", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
-
-  set :env_ready, 1
-  osc "/play/button2", 1
-  sleep 3
-  set :env_ready, 0
-  sleep 3
 end
 
 
@@ -220,14 +138,12 @@ if live_test == 1 then
   use_osc "localhost", 4560
 
   set :o1_pos, 1  #testing in right channel
-  test_o1
+  #test_o1
   set :o1_pos, -1 #send sound to left channel after testing
 
   set :o2_pos, 1  #testing in right channel
-  test_o2_m1
-  test_o2_m2
+  #test_o2_m1
+  #test_o2_m2
   set :o2_pos, -1 #send sound to left channel after testing
-
-  test_o3
-  
+  test_o3 
 end

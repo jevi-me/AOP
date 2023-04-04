@@ -23,9 +23,9 @@ use_osc "localhost", 4560
 
 # Local Variables 
 set :o2_pos, -1 #Play in the left channel
-set :o2_on, 1       #Determines whether the O1 will play any sound (Allows for it to be muted)
-set :o2_loop1, 0    #Determines whether the O1 will play loop1 sound
-set :o2_loop2, 0    #Determines whether the O1 will play loop2 sound
+set :o2_on, 1       #Determines whether the O2 will play any sound (Allows for it to be muted)
+set :o2_loop1, 0    #Determines whether the O2 will play loop1 sound
+set :o2_loop2, 0    #Determines whether the O2 will play loop2 sound
 
 # Values for Pads (Toggle Mode, Note Play)
 set :mut_o2, 0      #O2 mut0 or mut1
@@ -196,30 +196,21 @@ end
 ### TODO: Fix below
 # ---------------------------------------------------------
 
-## Hit 1
-live_loop :o2_hit1_on do
+# Start Loop 1
+live_loop :o2_loop1_on_trigger do        #o2 loop1 is triggered to go on
   use_real_time
   btn_no, vel = sync "/osc*/play/button1"
-  if get(:o2_ready) == 1 then
+  set :o2_loop1, 1                       #turn the loop1 switch on
+  if get(:env_ready) == 1 then
     osc "/o2_prop/button1", 1
-    if get(:env_ready) == 1 then
-      live_loop :o2_hit1_env_ready do
-        while get(:env_ready) == 1 do
+    if get(:o2_ready) == 1 then
+      live_loop :o2_env_l1 do
+        while get(:o2_loop1) == 1 do
           if get(:mut_o2) == 0 then
-            use_synth :growl
-            play get(:adjpitch) +4, pan: get(:o2_pos), amp: get(:adjvol)
-            use_synth :dark_ambience
-            with_fx :vowel, vowel_sound: 5, voice: 4 do
-              play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
-            end
+            # Pointillism Creature
           end
           if get(:mut_o2) == 1 then
-            use_synth :growl
-            play get(:adjpitch) +8, pan: get(:o2_pos), amp: get(:adjvol)
-            use_synth :dark_ambience
-            with_fx :vowel, vowel_sound: 5, voice: 4 do
-              play get(:adjpitch) + 12, pan: get(:o2_pos), amp: get(:adjvol)
-            end
+            # Rough Creature
           end
           sleep get(:adjdens) + 0.2
         end
@@ -227,120 +218,86 @@ live_loop :o2_hit1_on do
         sleep get(:adjdens) + 0.2   
       end
     else
-      if get(:mut_o2) == 0 then
-        use_synth :growl
-        play get(:adjpitch) +4, pan: get(:o2_pos), amp: get(:adjvol)
-        use_synth :dark_ambience
-        with_fx :vowel, vowel_sound: 5, voice: 4 do
-          play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
-        end
-      end
-      if get(:mut_o2) == 1 then
-        use_synth :growl
-        play get(:adjpitch) +8, pan: get(:o2_pos), amp: get(:adjvol)
-        use_synth :dark_ambience
-        with_fx :vowel, vowel_sound: 5, voice: 4 do
-          play get(:adjpitch) + 12, pan: get(:o2_pos), amp: get(:adjvol)
-        end
-      end
+      stop
     end
+  else
+    stop
   end
   sleep get(:adjdens) + 0.2
 end
 
 
-## Hit 2
-live_loop :o2_hit2_on do
+## Stop Loop 1
+live_loop :o2_loop1_off_trigger do
   use_real_time
   btn_no, vel = sync "/osc*/play/button3"
-  if get(:o2_ready) == 1 then
-    osc "/o2_prop/button3", 1
-    if get(:env_ready) == 1 then
-      live_loop :o2_hit2_env_ready do
-        while get(:env_ready) == 1 do
-          if get(:mut_o2) == 0 then
-            use_synth :piano
-            play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
-            use_synth :growl
-            play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
-          end
-          if get(:mut_o2) == 1 then
-            use_synth :piano
-            play get(:adjpitch) + 8, pan: get(:o2_pos), amp: get(:adjvol)
-            use_synth :growl
-            play get(:adjpitch) + 12, pan: get(:o2_pos), amp: get(:adjvol)
-          end
-          sleep get(:adjdens) + 0.2
-        end
-        stop
-        sleep get(:adjdens) + 0.2
-      end
-    else
-      if get(:mut_o2) == 0 then
-        use_synth :piano
-        play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
-        use_synth :growl
-        play get(:adjpitch) + 4, pan: get(:o2_pos), amp: get(:adjvol)
-      end
-      if get(:mut_o2) == 1 then
-        use_synth :piano
-        play get(:adjpitch) + 8, pan: get(:o2_pos), amp: get(:adjvol)
-        use_synth :growl
-        play get(:adjpitch) + 12, pan: get(:o2_pos), amp: get(:adjvol)
-      end
-    end
-  end
-  sleep get(:adjdens) + 0.2
+  osc "/o2_prop/button3", 1
+  if get(:o2_loop1) == 1 then 
+    set :o2_loop1, 0     #turn the loop1 switch off
+  end                  
+  sleep 0.2
 end
 
-## Drone 1
-live_loop :o2_drone1_on do
+# Start Loop 1
+live_loop :o2_loop2_on_trigger do        #o2 loop1 is triggered to go on
   use_real_time
   btn_no, vel = sync "/osc*/play/button4"
-  if get(:o2_ready) == 1 then
+  set :o2_loop2, 1                       #turn the loop1 switch on
+  if get(:env_ready) == 1 then
     osc "/o2_prop/button4", 1
-    if get(:env_ready) == 1 then
-      live_loop :o2_drone1_env_ready do
-        while get(:env_ready) == 1 do
-          use_synth :prophet
-          with_fx :vowel, vowel_sound: 5, voice: 4 do
-          play get(:adjpitch), sustain: get(:adjdens), pan: get(:o2_pos), amp: get(:adjvol)*0.75
+    if get(:o2_ready) == 1 then
+      live_loop :o2_env_l2 do
+        while get(:o2_loop2) == 1 do
+          if get(:mut_o2) == 0 then
+            # Pointillism Creature
+          end
+          if get(:mut_o2) == 1 then
+            # Rough Creature
           end
           sleep get(:adjdens) + 0.2
         end
         stop
-        sleep get(:adjdens) + 0.2
+        sleep get(:adjdens) + 0.2   
       end
     else
-      use_synth :prophet
-      with_fx :vowel, vowel_sound: 5, voice: 4 do
-      play get(:adjpitch), sustain: get(:adjdens), pan: get(:o2_pos), amp: get(:adjvol)*0.75
-      end
+      stop
     end
+  else
+    stop
   end
   sleep get(:adjdens) + 0.2
 end
 
-## Drone 2
-live_loop :o2_drone2_on do
+## Stop Loop 2
+live_loop :o2_loop2_off_trigger do
   use_real_time
   btn_no, vel = sync "/osc*/play/button2"
-  if get(:o2_ready) == 1 then
-    osc "/o2_prop/button2", 1
-    if get(:env_ready) == 1 then
-      live_loop :o2_drone2_env_ready do
-        while get(:env_ready) == 1 do
-          use_synth :prophet
-          play get(:adjpitch)+4, sustain: get(:adjdens), pan: get(:o2_pos), amp: get(:adjvol)*0.75
-          sleep get(:adjdens) + 0.2
-        end
-        stop
-        sleep get(:adjdens) + 0.2
-      end
-    else
-      use_synth :prophet
-      play get(:adjpitch)+4, sustain: get(:adjdens), pan: get(:o2_pos), amp: get(:adjvol)*0.75
-    end
+  osc "/o2_prop/button2", 1
+  if get(:o2_loop1) == 1 then 
+    set :o2_loop2, 0                       #turn the loop2 switch off
+  end
+  sleep 0.2
+end
+
+
+## Improvise
+live_loop :o2_improv_on do
+  use_real_time
+  btn_no, vel = sync "/osc*/play/improv_burst"
+  
+  slist= [:mod_beep, :growl, :dark_ambience, :growl, :fm]
+  
+  ranSyn=     [rrand_i(0, slist.length-1), rrand_i(0,slist.length-1), rrand_i(0, slist.length-1)]
+  ranNote=    [get(:adjpitch),get(:adjpitch),get(:adjpitch)]
+  ranAttack=  [rrand(0, 1), rrand(0,1), rrand(0, 1)]
+  ranRelease= [rrand(0, 1), rrand(0,1), rrand(0, 1)]
+  
+  if rrand_i(0,20) > 1 then
+    synth slist[ranSyn[0]],note: ranNote[0],attack: ranAttack[0], release: ranRelease[0], pan: get(:ctrl_d1), amp:  get(:adjvol), on: get(:o2_on)
+    synth slist[ranSyn[1]],note: ranNote[1],attack: ranAttack[1], release: ranRelease[1], pan: get(:ctrl_d1), amp:  get(:adjvol), on: get(:o2_on)
+    synth slist[ranSyn[2]],note: ranNote[2],attack: ranAttack[2], release: ranRelease[2], pan: get(:ctrl_d1), amp:  get(:adjvol), on: get(:o2_on)
+  else
+    synth :cnoise, sustain: 0.5, amp: get(:adjvol), on: get(:o2_on)
   end
   sleep get(:adjdens) + 0.2
 end

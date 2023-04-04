@@ -18,27 +18,30 @@ use_cue_logging false
 ## Define and Initialise the values used to control the intrument
 # ---------------------------------------------------------
 
+# Local Variables 
+set :o3_pos, 1      #Play in the left channel
+set :o3_on, 1       #Determines whether the O3 will play any sound (Allows for it to be muted)
+set :o3_loop1, 0    #Determines whether the O3 will play loop1 sound
+set :o3_loop2, 0    #Determines whether the O3 will play loop2 sound
+
 #Samples
 sample_free_all
-ffield = "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/ForceFieldHum_BW.45030.wav"
+#ffield = "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/ForceFieldHum_BW.45030.wav"
 cmal2 =  "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Mountain_Audio_-_Computer_Malfunction_-_Sound_\(2\).wav"
-throb = "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Rhythmic_Electrical_Throbbing.wav"
+#throb = "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Rhythmic_Electrical_Throbbing.wav"
 turbine = "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Sci-Fi_Large_Turbine_Loop_3.wav"
 
 # Finish = 1/(duration of sample) * 3  | 3 = length of a "breath"
-ffield_fin =  0.05 #3/64
+#ffield_fin =  0.05 #3/64
 cmal2_fin = 0.375 #3/8
-throb_fin = 0.75 #3/4
+#throb_fin = 0.75 #3/4
 turbine_fin = 0.6 #3/5
 
 # Finish = 1/(duration of sample) * 1  | 1 = length of a "hit"
-ffield_fin_1 =  0.01 #1/64
+#ffield_fin_1 =  0.01 #1/64
 cmal2_fin_1 = 0.125 #1/8
-throb_fin_1 = 0.25 #1/4
+#throb_fin_1 = 0.25 #1/4
 turbine_fin_1 = 0.2 #1/5
-
-# Pan Position in sound environment
-set :o3_pos, 1 #right channel
 
 
 # Values for Pads (Toggle Mode, Note Play)
@@ -77,6 +80,7 @@ live_loop :o3_enviro_1 do
     set :ctrl_d1, val
   end
 end
+
 live_loop :o3_enviro_2 do
   use_real_time
   knb_no, knb_name, val = sync "/osc*/enviro/2"
@@ -150,6 +154,7 @@ live_loop :o3_modes_6 do
     set :chaos0, val
   end
 end
+
 live_loop :o3_modes_7 do
   use_real_time
   pad_no, pad_name, val = sync "/osc*/modes/7"
@@ -163,6 +168,11 @@ live_loop :o3_modes_8 do
   pad_no, pad_name, val = sync "/osc*/modes/8"
   if pad_no == 8 then
     set :chaos2, val
+    if val == 0 then
+      set :o3_on, 1
+    else
+      set :o3_on, 0
+    end
   end
 end
 
@@ -203,79 +213,15 @@ end
 #### PLAY
 # ---------------------------------------------------------
 
-## Hit 1
-live_loop :o3_hit1_on do
+# Start Loop 1
+live_loop :o3_loop1_on_trigger do        #o3 loop1 is triggered to go on
   use_real_time
   btn_no, vel = sync "/osc*/o2_prop/button1"
-  if get(:o3_ready) == 1 then
-    if get(:env_ready) == 1 then
-      live_loop :o3_hit1_env_ready do
-        while get(:env_ready) == 1 do
-          sample throb, amp: get(:adjvol), pan: get(:o3_pos), finish: throb_fin_1
-          sleep 0.2 + get(:adjdens)
-        end
-        stop
-        sleep get(:adjdens) + 0.2
-      end
-    else
-      sample throb, amp: get(:adjvol), pan: get(:o3_pos), finish: throb_fin_1
-    end
-  end
-  sleep get(:adjdens) + 0.2
-end
-
-
-## Hit 2
-live_loop :o3_hit2_on do
-  use_real_time
-  btn_no, vel = sync "/osc*/o2_prop/button3"
-  if get(:o3_ready) == 1 then
-    if get(:env_ready) == 1 then
-      live_loop :o3_hit1_env_ready do
-        while get(:env_ready) == 1 do
-          sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: turbine_fin_1
-          sleep 0.2 + get(:adjdens)
-        end
-        stop
-        sleep get(:adjdens) + 0.2
-      end
-    else
-      sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: turbine_fin_1
-    end
-  end
-  sleep get(:adjdens) + 0.2
-end
-
-## Drone 1
-live_loop :o3_drone1_on do
-  use_real_time
-  btn_no, vel = sync "/osc*/o2_prop/button4"
-  if get(:o3_ready) == 1 then
-    if get(:env_ready) == 1 then
-      live_loop :o3_drone1_env_ready do
-        while get(:env_ready) == 1 do
-          sample ffield, amp: get(:adjvol), pan: get(:o3_pos), finish: ffield_fin
-          sleep 1 + get(:adjdens)
-        end
-        stop
-        sleep get(:adjdens) + 0.2
-      end
-    else
-      sample ffield, amp: get(:adjvol), pan: get(:o3_pos), finish: ffield_fin
-    end
-  end
-  sleep get(:adjdens) + 0.2
-end
-
-
-## Drone 2
-live_loop :o3_drone2_on do
-  use_real_time
-  btn_no, vel = sync "/osc*/o2_prop/button2"
-  if get(:o3_ready) == 1 then
-    if get(:env_ready) == 1 then
-      live_loop :o3_drone2_env_ready do
-        while get(:env_ready) == 1 do
+  set :o3_loop1, 1                       #turn the loop1 switch on
+  if get(:env_ready) == 1 then
+    if get(:o3_ready) == 1 then
+      live_loop :o3_env_l1 do            #liveloop for l1
+        while get(:o3_loop1) == 1 do     #while o3 loop1 value is 1          
           sample cmal2, amp: get(:adjvol), pan: get(:o3_pos), finish: cmal2_fin
           sleep 3 + get(:adjdens)
         end
@@ -283,8 +229,56 @@ live_loop :o3_drone2_on do
         sleep get(:adjdens) + 0.2
       end
     else
-      sample cmal2, amp: get(:adjvol), pan: get(:o3_pos), finish: cmal2_fin
+     stop
     end
+  else
+     stop
   end
   sleep get(:adjdens) + 0.2
+end
+
+# Stop Loop 1
+live_loop :o3_loop1_off_trigger do       #o3 loop1 is triggered to go off
+  use_real_time
+  btn_no, vel = sync "/osc*/o2_prop/button3"
+  if get(:o3_loop1) == 1 then 
+    set :o3_loop1, 0                       #turn the loop1 switch off
+  end
+  sleep 0.2
+end
+
+
+
+## Start Loop 2
+live_loop :o3_loop2_on_trigger do        #o3 loop2 is triggered to go on
+  use_real_time
+  btn_no, vel = sync "/osc*/o2_prop/button4"
+  set :o3_loop2, 1                       #turn the loop2 switch on
+  if get(:env_ready) == 1 then
+    if get(:o3_ready) == 1 then
+      live_loop :o3_env_l2 do            #liveloop for l2
+        while get(:o3_loop2) == 1 do     #while o3 loop2 value is 1
+          sample turbine, amp: get(:adjvol), pan: get(:o3_pos), finish: turbine_fin_1
+          sleep 0.2 + get(:adjdens) 
+        end
+        stop
+        sleep get(:adjdens) + 0.2
+      end
+    else
+     stop
+    end
+  else
+     stop
+  end
+  sleep get(:adjdens) + 0.2
+end
+
+## Stop Loop 2
+live_loop :o3_loop2_off_trigger do       #o3 loop2 is triggered to go off
+  use_real_time
+  btn_no, vel = sync "/osc*/o2_prop/button2"
+  if get(:o3_loop2) == 1 then
+    set :o3_loop2, 0                       #turn the loop2 switch off
+  end
+  sleep 0.2
 end

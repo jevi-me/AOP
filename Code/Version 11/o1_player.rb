@@ -219,9 +219,10 @@ end
 live_loop :o1_loop1_off_trigger do       #o1 loop1 is triggered to go off
   use_real_time
   btn_no, vel = sync "/osc*/play/button3"
-  set :o1_loop1, 0                       #turn the loop1 switch off
+  if get(:o1_loop1) == 1 then 
+    set :o1_loop1, 0                       #turn the loop1 switch off
+  end
   sleep 0.2
-  stop
 end
 
 ## Start Loop 2
@@ -255,32 +256,13 @@ end
 live_loop :o1_loop2_off_trigger do       #o1 loop2 is triggered to go off
   use_real_time
   btn_no, vel = sync "/osc*/play/button2"
-  set :o1_loop2, 0                       #turn the loop2 switch off
+  if get(:o1_loop2) == 1 then
+    set :o1_loop2, 0                       #turn the loop2 switch off
+  end
   sleep 0.2
-  stop
 end
 
-## Improvise
-live_loop :o1_improv_on do
-  use_real_time
-  btn_no, vel = sync "/osc*/play/improv_burst"
-  
-  slist= [:mod_beep, :growl, :dark_ambience, :growl, :fm]
-  
-  ranSyn=     [rrand_i(0, slist.length-1), rrand_i(0,slist.length-1), rrand_i(0, slist.length-1)]
-  ranNote=    [get(:adjpitch),get(:adjpitch),get(:adjpitch)]
-  ranAttack=  [rrand(0, 1), rrand(0,1), rrand(0, 1)]
-  ranRelease= [rrand(0, 1), rrand(0,1), rrand(0, 1)]
-  
-  if rrand_i(0,20) > 1 then
-    synth slist[ranSyn[0]],note: ranNote[0],attack: ranAttack[0], release: ranRelease[0], pan: get(:ctrl_d1), amp:  get(:adjvol), on: get(:o1_on)
-    synth slist[ranSyn[1]],note: ranNote[1],attack: ranAttack[1], release: ranRelease[1], pan: get(:ctrl_d1), amp:  get(:adjvol), on: get(:o1_on)
-    synth slist[ranSyn[2]],note: ranNote[2],attack: ranAttack[2], release: ranRelease[2], pan: get(:ctrl_d1), amp:  get(:adjvol), on: get(:o1_on)
-  else
-    synth :cnoise, sustain: 0.5, amp: get(:adjvol), on: get(:o1_on)
-  end
-  sleep get(:adjdens) + 0.2
-end
+
 
 
 # -----------------------------------------------------------------------
