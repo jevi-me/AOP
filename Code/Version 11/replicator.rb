@@ -108,9 +108,9 @@ live_loop :knb_chg12 do
   knb_no, val = sync "/midi*12/control_change"
   val = normf(val)
   if knb_no == 4 then
-    set :adjdens, (val*4 + 0.2)
-    puts k_name[3], (val*4 + 0.2)
-    osc "/enviro/4", knb_no, "adjdens", (val*4 + 0.2)
+    set :adjdens, (val+ 0.2)
+    puts k_name[3], (val+ 0.2)
+    osc "/enviro/4", knb_no, "adjdens", (val+ 0.2)
   end
 end
 

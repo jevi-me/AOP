@@ -284,7 +284,6 @@ live_loop :chaos2_loop do
           end
         end
         sleep get(:adjdens) + 0.2
-
       end
       stop
       sleep get(:adjdens) + 0.2

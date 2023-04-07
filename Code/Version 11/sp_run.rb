@@ -12,8 +12,8 @@ use_debug false
 use_cue_logging false
 
 live = 1
-
-setup_test = 0
+setup_test_1 = 0
+setup_test_2 = 0
 live_test = 0
 
 define :rfiles do
@@ -120,8 +120,8 @@ define :test_o3 do
 end
 
 
-# Run Test Setup
-if setup_test == 1 then
+# Run Test Setup 1
+if setup_test_1 == 1 then
   loop do
     use_synth :pnoise
     play :c4, pan: -1
@@ -131,6 +131,22 @@ if setup_test == 1 then
     sleep 1
   end
 end
+
+# Run Test Setup 2
+if setup_test_2 == 1 then
+  cmal2 =  "/Users/jevi/GitHub/EOA/Code/Version\ 10/samples/Mountain_Audio_-_Computer_Malfunction_-_Sound_\(2\).wav"
+  loop do
+    sample cmal2, amp: 1, pan: -1, finish: 1
+    use_synth :pnoise
+    play :c4, pan: -1
+    sleep 1
+    sample cmal2, amp: 1, pan: 1, finish: 1
+    use_synth :pnoise
+    play :d4, pan: 1
+    sleep 1
+  end
+end
+
 
 # Run Live
 if live == 1 then
